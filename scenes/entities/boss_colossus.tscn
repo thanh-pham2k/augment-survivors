@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/boss_colossus.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/boss_colossus.png" id="2_texture"]
+[ext_resource type="Script" path="res://scripts/combat/telegraph_visualizer.gd" id="3_telegraph"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_boss"]
+radius = 28.0
+
+[node name="BossColossus" type="CharacterBody2D" groups=["enemies"]]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_texture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_boss")
+
+[node name="ShieldVisual" type="Node2D" parent="."]
+script = ExtResource("3_telegraph")
+shape_type = "circle"
+radius = 45.0
+fill_color = Color(0.2, 0.6, 1.0, 0.25)
+outline_color = Color(0.4, 0.8, 1.0, 0.9)
+
+[node name="TelegraphSlam" type="Node2D" parent="."]
+visible = false
+script = ExtResource("3_telegraph")
+shape_type = "circle"
+radius = 140.0
+fill_color = Color(1.0, 0.2, 0.2, 0.25)
+outline_color = Color(1.0, 0.3, 0.3, 0.9)
+
+[node name="TelegraphFan" type="Node2D" parent="."]
+visible = false
+script = ExtResource("3_telegraph")
+shape_type = "fan"
+radius = 180.0
+fan_angle_deg = 90.0
+fill_color = Color(1.0, 0.2, 0.2, 0.25)
+outline_color = Color(1.0, 0.3, 0.3, 0.9)

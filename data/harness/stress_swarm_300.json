@@ -1,0 +1,14 @@
+{
+  "name": "Stress Swarm 300 & Proc Test",
+  "seed": 1337,
+  "steps": [
+    { "type": "wait", "seconds": 0.1 },
+    { "type": "player_dash" },
+    { "type": "spawn_stress", "count": 150 },
+    { "type": "wait", "seconds": 0.2 },
+    { "type": "spawn_stress", "count": 150 },
+    { "type": "wait", "seconds": 0.2 },
+    { "type": "assert_fps", "min_fps": 30 },
+    { "type": "wait", "seconds": 0.1 }
+  ]
+}

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/synergy/augment_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "wildfire"
+name = "Wildfire"
+description = "Burning enemies spread flames to nearby enemies upon death."
+rarity = 0
+element = 1
+icon_path = "res://assets/icons/wildfire.png"
+bonus_damage_pct = 0.0
+burn_dps = 8.0
+chill_slow_pct = 0.0
+chain_targets = 0
+proc_chance = 1.0

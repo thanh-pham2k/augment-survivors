@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/synergy/augment_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "arc_bolt"
+name = "Arc Bolt"
+description = "Every fourth shot chains lightning to nearby enemies."
+rarity = 2
+element = 3
+icon_path = "res://assets/icons/arc_bolt.png"
+bonus_damage_pct = 0.0
+burn_dps = 0.0
+chill_slow_pct = 0.0
+chain_targets = 2
+proc_chance = 1.0

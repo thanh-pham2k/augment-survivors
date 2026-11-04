@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/base_enemy.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/skeleton.png" id="2_texture"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_skeleton"]
+radius = 10.0
+
+[node name="SkeletonEnemy" type="CharacterBody2D" groups=["enemies"]]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_script")
+max_health = 45.0
+current_health = 45.0
+base_speed = 75.0
+contact_damage = 10.0
+archetype = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_texture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_skeleton")

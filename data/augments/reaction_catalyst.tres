@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/synergy/augment_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "reaction_catalyst"
+name = "Reaction Catalyst"
+description = "Increases elemental reaction triggers and damage by 30%."
+rarity = 1
+element = 0
+icon_path = "res://assets/icons/reaction_catalyst.png"
+bonus_damage_pct = 0.3
+burn_dps = 0.0
+chill_slow_pct = 0.0
+chain_targets = 0
+proc_chance = 1.0

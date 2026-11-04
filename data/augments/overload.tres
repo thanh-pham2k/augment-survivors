@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/synergy/augment_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "overload"
+name = "Overload"
+description = "Chain Lightning interacts with existing status effects, dealing critical damage."
+rarity = 1
+element = 3
+icon_path = "res://assets/icons/overload.png"
+bonus_damage_pct = 0.5
+burn_dps = 0.0
+chill_slow_pct = 0.0
+chain_targets = 0
+proc_chance = 1.0

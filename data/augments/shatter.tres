@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/synergy/augment_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "shatter"
+name = "Shatter"
+description = "Attacks against Chilled enemies deal bonus burst damage."
+rarity = 0
+element = 2
+icon_path = "res://assets/icons/shatter.png"
+bonus_damage_pct = 0.35
+burn_dps = 0.0
+chill_slow_pct = 0.0
+chain_targets = 0
+proc_chance = 1.0
