@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/proj_fire.png" id="2_texture"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_proj"]
-radius = 12.0
+radius = 14.0
 
 [node name="Projectile" type="Area2D"]
 collision_layer = 8

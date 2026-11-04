@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/run_results_ui.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/victory_screen_bg.png" id="2_bg"]
 
 [node name="RunResultsUI" type="Control"]
 process_mode = 3
@@ -13,6 +14,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
 [node name="Overlay" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -20,74 +32,78 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.85)
+color = Color(0.04, 0.04, 0.08, 0.5)
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = -260.0
-offset_right = 280.0
-offset_bottom = 260.0
+offset_left = -300.0
+offset_top = -250.0
+offset_right = 300.0
+offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Header" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="Header" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 36
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_font_sizes/font_size = 42
 text = "VICTORY"
 horizontal_alignment = 1
 
-[node name="StatsGrid" type="GridContainer" parent="PanelContainer/VBoxContainer"]
+[node name="StatsGrid" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
 columns = 2
-theme_override_constants/h_separation = 20
+theme_override_constants/h_separation = 30
 
-[node name="TimeLabel" type="Label" parent="PanelContainer/VBoxContainer/StatsGrid"]
+[node name="TimeLabel" type="Label" parent="VBoxContainer/StatsGrid"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "Survival Time:"
 
-[node name="TimeValue" type="Label" parent="PanelContainer/VBoxContainer/StatsGrid"]
+[node name="TimeValue" type="Label" parent="VBoxContainer/StatsGrid"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "11:50"
 
-[node name="KillsLabel" type="Label" parent="PanelContainer/VBoxContainer/StatsGrid"]
+[node name="KillsLabel" type="Label" parent="VBoxContainer/StatsGrid"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "Defeated Enemies:"
 
-[node name="KillsValue" type="Label" parent="PanelContainer/VBoxContainer/StatsGrid"]
+[node name="KillsValue" type="Label" parent="VBoxContainer/StatsGrid"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "5,973"
 
-[node name="SynergiesTitle" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="SynergiesTitle" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
 text = "Discovered Synergies:"
 
-[node name="SynergiesList" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="SynergiesList" type="VBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="DamageTitle" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="DamageTitle" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
 text = "Damage Contribution:"
 
-[node name="DamageChart" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="DamageChart" type="VBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 8
 
-[node name="PlayAgainButton" type="Button" parent="PanelContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 48)
+[node name="PlayAgainButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
-theme_override_font_sizes/font_size = 20
-text = "PLAY AGAIN"
+theme_override_colors/font_color = Color(1, 0.95, 0.4, 1)
+theme_override_font_sizes/font_size = 22
+text = "▶ PLAY AGAIN"

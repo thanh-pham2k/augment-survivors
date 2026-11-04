@@ -3,11 +3,12 @@ extends Control
 
 signal play_again_requested
 
-@onready var time_label: Label = $PanelContainer/VBoxContainer/StatsGrid/TimeValue
-@onready var kills_label: Label = $PanelContainer/VBoxContainer/StatsGrid/KillsValue
-@onready var damage_chart_container: VBoxContainer = $PanelContainer/VBoxContainer/DamageChart
-@onready var synergies_list: VBoxContainer = $PanelContainer/VBoxContainer/SynergiesList
-@onready var play_again_btn: Button = $PanelContainer/VBoxContainer/PlayAgainButton
+@onready var bg_texture: TextureRect = $Background
+@onready var time_label: Label = $VBoxContainer/StatsGrid/TimeValue
+@onready var kills_label: Label = $VBoxContainer/StatsGrid/KillsValue
+@onready var damage_chart_container: VBoxContainer = $VBoxContainer/DamageChart
+@onready var synergies_list: VBoxContainer = $VBoxContainer/SynergiesList
+@onready var play_again_btn: Button = $VBoxContainer/PlayAgainButton
 
 func _ready() -> void:
 	play_again_btn.pressed.connect(func(): play_again_requested.emit())
@@ -16,12 +17,12 @@ func show_results(is_victory: bool, time_str: String, kills: int, damage_contrib
 	visible = true
 	get_tree().paused = true
 	
-	var header = $PanelContainer/VBoxContainer/Header as Label
+	var header = $VBoxContainer/Header as Label
 	if is_victory:
-		header.text = "VICTORY"
-		header.modulate = Color(1.0, 0.85, 0.2)
+		header.text = "🏆 VICTORY 🏆"
+		header.modulate = Color(1.0, 0.88, 0.2)
 	else:
-		header.text = "DEFEAT"
+		header.text = "☠ DEFEAT ☠"
 		header.modulate = Color(0.9, 0.2, 0.2)
 		
 	time_label.text = time_str
@@ -37,18 +38,25 @@ func show_results(is_victory: bool, time_str: String, kills: int, damage_contrib
 	if total_dmg <= 0.0:
 		total_dmg = 1.0
 		
-	for cat in ["Fire", "Ice", "Lightning", "Physical"]:
+	var colors = {
+		"Fire": Color(1.0, 0.45, 0.1),
+		"Ice": Color(0.3, 0.8, 1.0),
+		"Lightning": Color(1.0, 0.9, 0.2),
+		"Physical": Color(0.9, 0.6, 0.2)
+	}
+	
+	for cat in ["Fire", "Lightning", "Physical", "Ice"]:
 		var val = damage_contrib.get(cat, 0.0)
 		var pct = int((val / total_dmg) * 100.0)
 		
 		var row = HBoxContainer.new()
 		var lbl = Label.new()
-		lbl.custom_minimum_size = Vector2(100, 0)
+		lbl.custom_minimum_size = Vector2(130, 0)
 		lbl.text = cat + ":"
 		row.add_child(lbl)
 		
 		var pbar = ProgressBar.new()
-		pbar.custom_minimum_size = Vector2(250, 20)
+		pbar.custom_minimum_size = Vector2(280, 22)
 		pbar.value = pct
 		pbar.show_percentage = true
 		row.add_child(pbar)

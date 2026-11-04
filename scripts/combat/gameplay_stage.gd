@@ -14,8 +14,9 @@ extends Node2D
 @onready var kills_label: Label = $UI/TopHUD/HBoxContainer/KillsLabel
 
 # Bottom HUD
-@onready var augment_slots_container: HBoxContainer = $UI/BottomHUD/HBoxContainer/AugmentSlots
-@onready var dash_button: Button = $UI/BottomHUD/HBoxContainer/DashButton
+@onready var augment_slots_container: HBoxContainer = $UI/BottomHUD/AugmentSlots
+@onready var dash_button: TextureButton = $UI/BottomHUD/DashButton
+@onready var dash_cd_label: Label = $UI/BottomHUD/DashButton/DashCooldownLabel
 
 # Synergy Banner
 @onready var synergy_banner: PanelContainer = $UI/SynergyBanner
@@ -33,13 +34,12 @@ var all_augments: Array[AugmentData] = []
 var active_augments: Array[AugmentData] = []
 
 var run_time: float = 0.0
-var draft_milestones: Array[float] = [20.0, 60.0, 120.0, 180.0]
-var boss_spawn_time: float = 240.0 # Boss appears at 4 minutes (scalable)
+var draft_milestones: Array[float] = [15.0, 45.0, 90.0, 150.0]
+var boss_spawn_time: float = 180.0
 var boss_spawned: bool = false
 var spawn_timer: float = 0.0
 
 func _ready() -> void:
-	# Initialize systems
 	rng_manager = RngManager.new()
 	rng_manager.initialize_seed(1337)
 	
@@ -75,7 +75,7 @@ func _load_all_augments() -> void:
 func _physics_process(delta: float) -> void:
 	run_time += delta
 	_update_timer_label()
-	kills_label.text = "Kills: " + str(event_bus.enemies_defeated)
+	kills_label.text = "💀 " + str(event_bus.enemies_defeated)
 	
 	# Check Draft Milestones
 	if draft_milestones.size() > 0 and run_time >= draft_milestones[0]:
@@ -93,13 +93,12 @@ func _physics_process(delta: float) -> void:
 		_spawn_wave()
 
 func _spawn_wave() -> void:
-	var count = 3 + int(run_time / 30.0)
+	var count = 3 + int(run_time / 25.0)
 	for i in range(count):
 		var angle = randf() * TAU
-		var dist = 500.0
+		var dist = 520.0
 		var spawn_pos = player.global_position + Vector2(cos(angle), sin(angle)) * dist
 		
-		# 75% skeleton, 25% bat
 		var enemy: BaseEnemy
 		if randf() > 0.25:
 			enemy = skeleton_scene.instantiate() as BaseEnemy
@@ -118,8 +117,7 @@ func _spawn_boss() -> void:
 	boss.boss_defeated.connect(_on_boss_defeated)
 	add_child(boss)
 	
-	# Spawn 3 Crystal Cores around arena
-	var angles = [0.0, 2.094, 4.188] # 0, 120, 240 degrees
+	var angles = [0.0, 2.094, 4.188]
 	for a in angles:
 		var crystal = crystal_scene.instantiate() as CrystalCore
 		crystal.global_position = Vector2(cos(a), sin(a)) * 260.0
@@ -140,7 +138,7 @@ func _update_augment_slots_ui() -> void:
 		child.queue_free()
 	for i in range(6):
 		var slot = PanelContainer.new()
-		slot.custom_minimum_size = Vector2(36, 36)
+		slot.custom_minimum_size = Vector2(44, 44)
 		if i < active_augments.size():
 			var aug = active_augments[i]
 			var tr = TextureRect.new()
@@ -150,9 +148,9 @@ func _update_augment_slots_ui() -> void:
 			slot.add_child(tr)
 		augment_slots_container.add_child(slot)
 
-func _on_synergy_unlocked(id: String, s_name: String, desc: String) -> void:
+func _on_synergy_unlocked(_id: String, s_name: String, desc: String) -> void:
 	synergy_banner.visible = true
-	synergy_banner_title.text = "⚡ SYNERGY: " + s_name.to_upper()
+	synergy_banner_title.text = s_name.to_upper()
 	synergy_banner_desc.text = desc
 	var tween = create_tween()
 	tween.tween_interval(3.5)
@@ -163,11 +161,13 @@ func _on_player_health_changed(curr: float, max_h: float) -> void:
 
 func _on_dash_cooldown_updated(curr: float, _max_cd: float) -> void:
 	if curr <= 0.0:
-		dash_button.text = "DASH (READY)"
+		dash_cd_label.text = ""
 		dash_button.disabled = false
+		dash_button.modulate = Color.WHITE
 	else:
-		dash_button.text = "DASH (" + str(snappedf(curr, 0.1)) + "s)"
+		dash_cd_label.text = str(snappedf(curr, 0.1)) + "s"
 		dash_button.disabled = true
+		dash_button.modulate = Color(0.6, 0.6, 0.6, 0.8)
 
 func _update_timer_label() -> void:
 	var mins = int(run_time) / 60
