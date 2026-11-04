@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/gameplay_stage.gd" id="1_script"]
 [ext_resource type="Script" path="res://scripts/combat/arena.gd" id="2_arena"]
+[ext_resource type="Texture2D" path="res://assets/sprites/arena_background.png" id="2_bg"]
 [ext_resource type="PackedScene" path="res://scenes/entities/player.tscn" id="3_player"]
 [ext_resource type="Script" path="res://scripts/combat/combat_event_bus.gd" id="4_eventbus"]
 [ext_resource type="Script" path="res://scripts/synergy/synergy_engine.gd" id="5_synergy"]
@@ -20,6 +21,10 @@ script = ExtResource("5_synergy")
 [node name="Arena" type="Node2D" parent="."]
 script = ExtResource("2_arena")
 
+[node name="ArenaBackground" type="Sprite2D" parent="Arena"]
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_bg")
+
 [node name="Player" parent="." instance=ExtResource("3_player")]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -30,28 +35,29 @@ position_smoothing_enabled = true
 [node name="TopHUD" type="PanelContainer" parent="UI"]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 48.0
+offset_bottom = 54.0
 grow_horizontal = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/TopHUD"]
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 50
 alignment = 1
 
 [node name="HPLabel" type="Label" parent="UI/TopHUD/HBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 0.35, 0.35, 1)
+theme_override_font_sizes/font_size = 20
 text = "120 / 120"
 
 [node name="TimerLabel" type="Label" parent="UI/TopHUD/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 22
 text = "00:00"
 
 [node name="KillsLabel" type="Label" parent="UI/TopHUD/HBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 18
 text = "Kills: 0"
 
 [node name="BottomHUD" type="PanelContainer" parent="UI"]
@@ -59,27 +65,29 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -60.0
+offset_top = -68.0
 grow_horizontal = 2
 grow_vertical = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/BottomHUD"]
 layout_mode = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 32
 alignment = 1
 
 [node name="SlotsLabel" type="Label" parent="UI/BottomHUD/HBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "Augments:"
 
 [node name="AugmentSlots" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
 [node name="DashButton" type="Button" parent="UI/BottomHUD/HBoxContainer"]
-custom_minimum_size = Vector2(140, 40)
+custom_minimum_size = Vector2(160, 48)
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.3, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 16
 text = "DASH (READY)"
 
 [node name="SynergyBanner" type="PanelContainer" parent="UI"]
@@ -87,10 +95,10 @@ visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -220.0
-offset_top = 64.0
-offset_right = 220.0
-offset_bottom = 130.0
+offset_left = -260.0
+offset_top = 68.0
+offset_right = 260.0
+offset_bottom = 140.0
 grow_horizontal = 2
 
 [node name="VBox" type="VBoxContainer" parent="UI/SynergyBanner"]
@@ -100,13 +108,13 @@ alignment = 1
 [node name="Title" type="Label" parent="UI/SynergyBanner/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 20
 text = "⚡ SYNERGY: BURNING CHAIN"
 horizontal_alignment = 1
 
 [node name="Desc" type="Label" parent="UI/SynergyBanner/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "Burning enemies chain lightning to nearby targets."
 horizontal_alignment = 1
 

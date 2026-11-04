@@ -5,13 +5,13 @@ signal health_changed(current: float, maximum: float)
 signal dash_cooldown_updated(current: float, max_cd: float)
 signal player_died
 
-@export var move_speed: float = 160.0
+@export var move_speed: float = 240.0
 @export var max_health: float = 120.0
 @export var current_health: float = 120.0
 
 # Dash settings
-@export var dash_speed: float = 400.0
-@export var dash_duration: float = 0.2
+@export var dash_speed: float = 650.0
+@export var dash_duration: float = 0.25
 @export var dash_cooldown: float = 4.2
 var _dash_timer: float = 0.0
 var _dash_cooldown_timer: float = 0.0
@@ -19,7 +19,7 @@ var _is_dashing: bool = false
 var _dash_direction: Vector2 = Vector2.RIGHT
 
 # Auto-fire weapon settings
-@export var fire_rate: float = 1.0 # 1 shot/s
+@export var fire_rate: float = 1.2
 var _fire_timer: float = 0.0
 var _shot_count: int = 0
 var projectile_scene: PackedScene = preload("res://scenes/combat/projectile.tscn")
@@ -48,10 +48,17 @@ func _physics_process(delta: float) -> void:
 			_is_dashing = false
 		return
 		
-	# 8-way movement input
+	# 8-way movement input (supports both Input Map actions and Direct Key fallback)
 	var input_vector := Vector2.ZERO
-	input_vector.x = Input.get_axis("ui_left", "ui_right")
-	input_vector.y = Input.get_axis("ui_up", "ui_down")
+	
+	if Input.is_action_pressed("move_left") or Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
+		input_vector.x -= 1.0
+	if Input.is_action_pressed("move_right") or Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
+		input_vector.x += 1.0
+	if Input.is_action_pressed("move_up") or Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
+		input_vector.y -= 1.0
+	if Input.is_action_pressed("move_down") or Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
+		input_vector.y += 1.0
 	
 	if input_vector.length() > 0:
 		input_vector = input_vector.normalized()
@@ -62,8 +69,8 @@ func _physics_process(delta: float) -> void:
 	velocity = input_vector * move_speed
 	move_and_slide()
 	
-	# Dash input
-	if Input.is_action_just_pressed("ui_select") or Input.is_key_pressed(KEY_SPACE):
+	# Dash input (Space key or mapped dash action)
+	if Input.is_action_just_pressed("dash") or Input.is_key_pressed(KEY_SPACE):
 		try_dash()
 		
 	# Auto-fire weapon
@@ -89,7 +96,7 @@ func _auto_fire() -> void:
 		base_direction = velocity.normalized()
 		
 	# 3-way fan pattern (spread shots)
-	var angles = [-0.25, 0.0, 0.25] # in radians (~15 deg spread)
+	var angles = [-0.22, 0.0, 0.22] # in radians
 	_shot_count += 1
 	
 	for a in angles:
