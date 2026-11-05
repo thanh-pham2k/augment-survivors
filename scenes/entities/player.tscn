@@ -1,27 +1,34 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/player.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/player_anim/player_frame_0.png" id="2_f0"]
-[ext_resource type="Texture2D" path="res://assets/player_anim/player_frame_1.png" id="3_f1"]
-[ext_resource type="Texture2D" path="res://assets/player_anim/player_frame_2.png" id="4_f2"]
-[ext_resource type="Texture2D" path="res://assets/player_anim/player_frame_3.png" id="5_f3"]
+[ext_resource type="Texture2D" path="res://assets/textures/player/player_00.png" id="2_p00"]
+[ext_resource type="Texture2D" path="res://assets/textures/player/player_01.png" id="3_p01"]
+[ext_resource type="Texture2D" path="res://assets/textures/player/player_02.png" id="4_p02"]
+[ext_resource type="Texture2D" path="res://assets/textures/player/player_03.png" id="5_p03"]
+[ext_resource type="Texture2D" path="res://assets/textures/player/player_04.png" id="6_p04"]
+[ext_resource type="Texture2D" path="res://assets/textures/player/player_05.png" id="7_p05"]
+[ext_resource type="Texture2D" path="res://assets/textures/player/player_06.png" id="8_p06"]
+[ext_resource type="Texture2D" path="res://assets/textures/player/player_07.png" id="9_p07"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_player"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_f0")
+"texture": ExtResource("2_p00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_p01")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_f1")
+"texture": ExtResource("4_p02")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_f2")
+"texture": ExtResource("5_p03")
 }],
 "loop": true,
 "name": &"walk",
@@ -29,24 +36,35 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_f3")
+"texture": ExtResource("6_p04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_p05")
 }],
 "loop": false,
 "name": &"cast",
-"speed": 6.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_f3")
+"texture": ExtResource("8_p06")
 }],
 "loop": false,
 "name": &"dash",
-"speed": 10.0
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_p07")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 8.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
 radius = 16.0
-height = 48.0
+height = 54.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
@@ -58,5 +76,5 @@ sprite_frames = SubResource("SpriteFrames_player")
 animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 8)
+position = Vector2(0, 10)
 shape = SubResource("CapsuleShape2D_player")
