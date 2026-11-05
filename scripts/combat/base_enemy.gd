@@ -3,23 +3,26 @@ extends CharacterBody2D
 
 signal enemy_defeated(enemy: BaseEnemy)
 
-@export var max_health: float = 50.0
-@export var current_health: float = 50.0
-@export var base_speed: float = 85.0
+@export var max_health: float = 45.0
+@export var current_health: float = 45.0
+@export var base_speed: float = 75.0
 @export var contact_damage: float = 10.0
 @export var archetype: GlobalEnums.EnemyArchetype = GlobalEnums.EnemyArchetype.SWARM_CHASER
 
 var speed_modifier: float = 1.0
-var statuses: Dictionary = {} # name -> {"duration": float, "param": float}
+var statuses: Dictionary = {}
 var event_bus: CombatEventBus
 var damage_num_scene: PackedScene = preload("res://scenes/combat/floating_damage_number.tscn")
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D")
+@onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 @onready var telegraph_line: Line2D = get_node_or_null("TelegraphLine")
 
 func _ready() -> void:
 	add_to_group("enemies")
 	current_health = max_health
+	if animated_sprite:
+		animated_sprite.play("walk")
 
 func _physics_process(delta: float) -> void:
 	_update_statuses(delta)
@@ -28,6 +31,7 @@ func _physics_process(delta: float) -> void:
 func _update_statuses(delta: float) -> void:
 	var to_remove: Array[String] = []
 	speed_modifier = 1.0
+	var vis = animated_sprite if animated_sprite else sprite
 	
 	for s_name in statuses.keys():
 		var data = statuses[s_name]
@@ -38,17 +42,19 @@ func _update_statuses(delta: float) -> void:
 			if s_name == "burning":
 				var dps = data["param"]
 				take_damage(dps * delta, GlobalEnums.ElementType.FIRE, false)
-				sprite.modulate = Color(1.0, 0.5, 0.2)
+				if vis:
+					vis.modulate = Color(1.0, 0.5, 0.2)
 			elif s_name == "chilled":
 				var slow = data["param"]
 				speed_modifier *= (1.0 - slow)
-				sprite.modulate = Color(0.4, 0.8, 1.0)
+				if vis:
+					vis.modulate = Color(0.4, 0.8, 1.0)
 				
 	for r in to_remove:
 		statuses.erase(r)
 		
-	if statuses.is_empty():
-		sprite.modulate = Color.WHITE
+	if statuses.is_empty() and vis:
+		vis.modulate = Color.WHITE
 
 func apply_status(status_name: String, duration: float, param: float) -> void:
 	statuses[status_name] = {"duration": duration, "param": param}
@@ -65,10 +71,11 @@ func take_damage(amount: float, element: GlobalEnums.ElementType = GlobalEnums.E
 		dnum.setup(amount, element)
 		get_parent().add_child(dnum)
 		
-	# White hit flash
-	sprite.modulate = Color(2.0, 2.0, 2.0)
-	var tween = create_tween()
-	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
+	var vis = animated_sprite if animated_sprite else sprite
+	if vis:
+		vis.modulate = Color(2.0, 2.0, 2.0)
+		var tween = create_tween()
+		tween.tween_property(vis, "modulate", Color.WHITE, 0.1)
 	
 	if current_health <= 0.0:
 		_die()
@@ -89,7 +96,11 @@ func _behavior_step(delta: float) -> void:
 	velocity = dir * base_speed * speed_modifier
 	move_and_slide()
 	
-	# Check collision with player
+	if animated_sprite:
+		animated_sprite.flip_h = dir.x < 0
+	elif sprite:
+		sprite.flip_h = dir.x < 0
+		
 	for i in range(get_slide_collision_count()):
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()

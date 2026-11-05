@@ -19,6 +19,8 @@ func _ready() -> void:
 	base_speed = 110.0
 	contact_damage = 15.0
 	flank_angle = randf() * TAU
+	if animated_sprite:
+		animated_sprite.play("fly")
 
 func _behavior_step(delta: float) -> void:
 	var player = _get_player()
@@ -31,12 +33,14 @@ func _behavior_step(delta: float) -> void:
 		BatState.FLANKING:
 			if telegraph_line:
 				telegraph_line.visible = false
-			# Orbit around player
 			flank_angle += 1.5 * delta
 			var desired_pos = player.global_position + Vector2(cos(flank_angle), sin(flank_angle)) * flank_distance
 			var dir = (desired_pos - global_position).normalized()
 			velocity = dir * base_speed * speed_modifier
 			move_and_slide()
+			
+			if animated_sprite:
+				animated_sprite.flip_h = dir.x < 0
 			
 			if timer >= 3.0:
 				timer = 0.0
@@ -45,7 +49,6 @@ func _behavior_step(delta: float) -> void:
 				
 		BatState.TELEGRAPHING:
 			velocity = Vector2.ZERO
-			# Show Red Telegraph Line
 			if telegraph_line:
 				telegraph_line.visible = true
 				telegraph_line.clear_points()
@@ -53,7 +56,7 @@ func _behavior_step(delta: float) -> void:
 				telegraph_line.add_point(to_local(dash_target))
 				telegraph_line.default_color = Color(1.0, 0.2, 0.2, 0.8)
 				
-			if timer >= 0.7: # 0.7s telegraph warning
+			if timer >= 0.7:
 				timer = 0.0
 				state = BatState.DASHING
 				if telegraph_line:
@@ -64,11 +67,13 @@ func _behavior_step(delta: float) -> void:
 			velocity = dir * base_speed * 3.0 * speed_modifier
 			move_and_slide()
 			
+			if animated_sprite:
+				animated_sprite.flip_h = dir.x < 0
+				
 			if timer >= 0.4 or global_position.distance_to(dash_target) < 15.0:
 				timer = 0.0
 				state = BatState.FLANKING
 				
-	# Contact damage with player
 	for i in range(get_slide_collision_count()):
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()

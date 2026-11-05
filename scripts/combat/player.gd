@@ -28,14 +28,16 @@ var damage_num_scene: PackedScene = preload("res://scenes/combat/floating_damage
 var event_bus: CombatEventBus
 var synergy_engine: SynergyEngine
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D")
+@onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 
 func _ready() -> void:
 	current_health = max_health
 	health_changed.emit(current_health, max_health)
+	if animated_sprite:
+		animated_sprite.play("idle")
 
 func _physics_process(delta: float) -> void:
-	# Update timers
 	if _dash_cooldown_timer > 0.0:
 		_dash_cooldown_timer = max(0.0, _dash_cooldown_timer - delta)
 		dash_cooldown_updated.emit(_dash_cooldown_timer, dash_cooldown)
@@ -44,11 +46,12 @@ func _physics_process(delta: float) -> void:
 		_dash_timer -= delta
 		velocity = _dash_direction * dash_speed
 		move_and_slide()
+		if animated_sprite and animated_sprite.animation != "dash":
+			animated_sprite.play("dash")
 		if _dash_timer <= 0.0:
 			_is_dashing = false
 		return
 		
-	# 8-way movement input (supports both Input Map actions and Direct Key fallback)
 	var input_vector := Vector2.ZERO
 	
 	if Input.is_action_pressed("move_left") or Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
@@ -63,17 +66,22 @@ func _physics_process(delta: float) -> void:
 	if input_vector.length() > 0:
 		input_vector = input_vector.normalized()
 		_dash_direction = input_vector
-		if input_vector.x != 0:
+		if animated_sprite:
+			animated_sprite.flip_h = input_vector.x < 0
+			if animated_sprite.animation != "walk":
+				animated_sprite.play("walk")
+		elif sprite:
 			sprite.flip_h = input_vector.x < 0
+	else:
+		if animated_sprite and animated_sprite.animation != "idle" and animated_sprite.animation != "cast":
+			animated_sprite.play("idle")
 			
 	velocity = input_vector * move_speed
 	move_and_slide()
 	
-	# Dash input (Space key or mapped dash action)
 	if Input.is_action_just_pressed("dash") or Input.is_key_pressed(KEY_SPACE):
 		try_dash()
 		
-	# Auto-fire weapon
 	_fire_timer += delta
 	if _fire_timer >= 1.0 / fire_rate:
 		_fire_timer = 0.0
@@ -95,8 +103,10 @@ func _auto_fire() -> void:
 	elif velocity.length() > 0:
 		base_direction = velocity.normalized()
 		
-	# 3-way fan pattern (spread shots)
-	var angles = [-0.22, 0.0, 0.22] # in radians
+	if animated_sprite and velocity.length() == 0:
+		animated_sprite.play("cast")
+		
+	var angles = [-0.22, 0.0, 0.22]
 	_shot_count += 1
 	
 	for a in angles:
@@ -106,7 +116,6 @@ func _auto_fire() -> void:
 		proj.shot_index = _shot_count
 		proj.event_bus = event_bus
 		
-		# Element determination
 		if synergy_engine:
 			if synergy_engine.has_augment("arc_bolt") and _shot_count % 4 == 0:
 				proj.element = GlobalEnums.ElementType.LIGHTNING
@@ -131,20 +140,20 @@ func _find_nearest_enemy() -> Node2D:
 
 func take_damage(amount: float) -> void:
 	if _is_dashing:
-		return # Invincible during dash
+		return
 	current_health = max(0.0, current_health - amount)
 	health_changed.emit(current_health, max_health)
 	
-	# Damage pop
 	var dnum = damage_num_scene.instantiate() as FloatingDamageNumber
 	dnum.global_position = global_position
 	dnum.setup(amount, GlobalEnums.ElementType.NONE, true)
 	get_parent().add_child(dnum)
 	
-	# Red flash
-	sprite.modulate = Color(1.0, 0.2, 0.2)
-	var tween = create_tween()
-	tween.tween_property(sprite, "modulate", Color.WHITE, 0.15)
+	var target_vis = animated_sprite if animated_sprite else sprite
+	if target_vis:
+		target_vis.modulate = Color(1.0, 0.2, 0.2)
+		var tween = create_tween()
+		tween.tween_property(target_vis, "modulate", Color.WHITE, 0.15)
 	
 	if current_health <= 0.0:
 		player_died.emit()
