@@ -19,7 +19,7 @@ var _is_dashing: bool = false
 var _dash_direction: Vector2 = Vector2.RIGHT
 
 # Auto-fire weapon settings
-@export var fire_rate: float = 1.2
+@export var fire_rate: float = 1.3
 var _fire_timer: float = 0.0
 var _shot_count: int = 0
 var projectile_scene: PackedScene = preload("res://scenes/combat/projectile.tscn")
@@ -96,47 +96,61 @@ func try_dash() -> bool:
 	return false
 
 func _auto_fire() -> void:
-	var target = _find_nearest_enemy()
-	var base_direction = Vector2.RIGHT
-	if target:
-		base_direction = (target.global_position - global_position).normalized()
-	elif velocity.length() > 0:
-		base_direction = velocity.normalized()
-		
+	# Smart Multi-Direction Targeting:
+	# Find up to 3 closest distinct enemies to fire in multiple directions!
+	var targets = _find_closest_enemies(3)
+	
 	if animated_sprite and velocity.length() == 0:
 		animated_sprite.play("cast")
 		
-	var angles = [-0.22, 0.0, 0.22]
 	_shot_count += 1
 	
-	for a in angles:
-		var proj = projectile_scene.instantiate() as Projectile
-		proj.global_position = global_position
-		proj.direction = base_direction.rotated(a)
-		proj.shot_index = _shot_count
-		proj.event_bus = event_bus
-		
-		if synergy_engine:
-			if synergy_engine.has_augment("arc_bolt") and _shot_count % 4 == 0:
-				proj.element = GlobalEnums.ElementType.LIGHTNING
-			elif synergy_engine.has_augment("frostbite"):
-				proj.element = GlobalEnums.ElementType.ICE
-			elif synergy_engine.has_augment("ember_shot"):
-				proj.element = GlobalEnums.ElementType.FIRE
-		
-		get_parent().add_child(proj)
+	if targets.is_empty():
+		# Fire spread in moving or facing direction
+		var base_dir = velocity.normalized() if velocity.length() > 0 else (Vector2.LEFT if (animated_sprite and animated_sprite.flip_h) else Vector2.RIGHT)
+		_spawn_bullet_fan(base_dir)
+	else:
+		# Fire directly towards up to 3 targets around the player!
+		for t in targets:
+			var dir_to_target = (t.global_position - global_position).normalized()
+			_spawn_bullet(dir_to_target)
 
-func _find_nearest_enemy() -> Node2D:
+func _spawn_bullet_fan(base_direction: Vector2) -> void:
+	var angles = [-0.22, 0.0, 0.22]
+	for a in angles:
+		_spawn_bullet(base_direction.rotated(a))
+
+func _spawn_bullet(dir: Vector2) -> void:
+	var proj = projectile_scene.instantiate() as Projectile
+	proj.global_position = global_position
+	proj.direction = dir
+	proj.shot_index = _shot_count
+	proj.event_bus = event_bus
+	
+	if synergy_engine:
+		if synergy_engine.has_augment("arc_bolt") and _shot_count % 4 == 0:
+			proj.element = GlobalEnums.ElementType.LIGHTNING
+		elif synergy_engine.has_augment("frostbite"):
+			proj.element = GlobalEnums.ElementType.ICE
+		elif synergy_engine.has_augment("ember_shot"):
+			proj.element = GlobalEnums.ElementType.FIRE
+			
+	get_parent().add_child(proj)
+
+func _find_closest_enemies(count: int = 3) -> Array[Node2D]:
 	var enemies = get_tree().get_nodes_in_group("enemies")
-	var nearest: Node2D = null
-	var min_dist: float = 999999.0
+	var valid_enemies: Array[Dictionary] = []
 	for e in enemies:
 		if is_instance_valid(e) and e is Node2D:
 			var d = global_position.distance_to(e.global_position)
-			if d < min_dist:
-				min_dist = d
-				nearest = e
-	return nearest
+			valid_enemies.append({"node": e, "dist": d})
+			
+	valid_enemies.sort_custom(func(a, b): return a["dist"] < b["dist"])
+	
+	var res: Array[Node2D] = []
+	for i in range(min(count, valid_enemies.size())):
+		res.append(valid_enemies[i]["node"])
+	return res
 
 func take_damage(amount: float) -> void:
 	if _is_dashing:

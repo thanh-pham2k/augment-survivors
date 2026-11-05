@@ -39,6 +39,8 @@ var boss_spawn_time: float = 180.0
 var boss_spawned: bool = false
 var spawn_timer: float = 0.0
 
+const MAX_CONCURRENT_ENEMIES: int = 35
+
 func _ready() -> void:
 	rng_manager = RngManager.new()
 	rng_manager.initialize_seed(1337)
@@ -86,21 +88,29 @@ func _physics_process(delta: float) -> void:
 	if not boss_spawned and run_time >= boss_spawn_time:
 		_spawn_boss()
 		
-	# Regular enemy spawning
+	# Controlled, rhythmic enemy spawning (prevents overwhelming clusters)
 	spawn_timer += delta
-	if spawn_timer >= 1.5:
+	if spawn_timer >= 2.2:
 		spawn_timer = 0.0
 		_spawn_wave()
 
 func _spawn_wave() -> void:
-	var count = 3 + int(run_time / 25.0)
+	var current_enemies = get_tree().get_nodes_in_group("enemies").size()
+	if current_enemies >= MAX_CONCURRENT_ENEMIES:
+		return # Hard cap prevents impossible clutter
+		
+	# Controlled spawn: 2 to 3 enemies per wave, distributed around player
+	var count = min(3, MAX_CONCURRENT_ENEMIES - current_enemies)
+	var base_angle = randf() * TAU
+	
 	for i in range(count):
-		var angle = randf() * TAU
-		var dist = 520.0
+		# Spread spawns in a circle so they flank from different angles
+		var angle = base_angle + (float(i) / count) * TAU + randf_range(-0.3, 0.3)
+		var dist = randf_range(520.0, 620.0)
 		var spawn_pos = player.global_position + Vector2(cos(angle), sin(angle)) * dist
 		
 		var enemy: BaseEnemy
-		if randf() > 0.25:
+		if randf() > 0.35:
 			enemy = skeleton_scene.instantiate() as BaseEnemy
 		else:
 			enemy = bat_scene.instantiate() as BaseEnemy
