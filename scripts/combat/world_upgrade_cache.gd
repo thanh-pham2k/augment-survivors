@@ -55,7 +55,7 @@ func claim(player: Node2D) -> bool:
 	if state != CacheState.AVAILABLE:
 		return false
 	state = CacheState.CLAIMED
-	monitoring = false
+	set_deferred("monitoring", false)
 	if collision_shape:
 		collision_shape.set_deferred("disabled", true)
 		
@@ -72,6 +72,6 @@ func _despawn() -> void:
 	if state != CacheState.AVAILABLE:
 		return
 	state = CacheState.DESPAWNED
-	monitoring = false
+	set_deferred("monitoring", false)
 	cache_despawned.emit(self)
 	queue_free()
