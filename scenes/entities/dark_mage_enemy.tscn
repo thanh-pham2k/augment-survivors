@@ -1,0 +1,63 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/dark_mage_enemy.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/mage/mage_walk_00.png" id="2_w00"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/mage/mage_walk_01.png" id="3_w01"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/mage/mage_walk_02.png" id="4_w02"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/mage/mage_walk_03.png" id="5_w03"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/mage/mage_cast_00.png" id="6_c00"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/mage/mage_cast_01.png" id="7_c01"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/mage/mage_cast_02.png" id="8_c02"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/mage/mage_cast_03.png" id="9_c03"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mage"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_w00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_w01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_w02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_w03")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_c00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_c01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_c02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_c03")
+}],
+"loop": false,
+"name": &"cast",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mage"]
+radius = 16.0
+
+[node name="DarkMageEnemy" type="CharacterBody2D" groups=["enemies"]]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_mage")
+animation = &"walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mage")

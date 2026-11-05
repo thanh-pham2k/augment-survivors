@@ -1,29 +1,42 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/bat_enemy.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/textures/enemies/enemy_04.png" id="2_e04"]
-[ext_resource type="Texture2D" path="res://assets/textures/enemies/enemy_05.png" id="3_e05"]
-[ext_resource type="Texture2D" path="res://assets/textures/enemies/enemy_06.png" id="4_e06"]
-[ext_resource type="Texture2D" path="res://assets/textures/enemies/enemy_07.png" id="5_e07"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/bat/bat_frame_00.png" id="2_b00"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/bat/bat_frame_01.png" id="3_b01"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/bat/bat_frame_02.png" id="4_b02"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/bat/bat_frame_03.png" id="5_b03"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/bat/bat_frame_04.png" id="6_b04"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/bat/bat_frame_05.png" id="7_b05"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_bat"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_e04")
+"texture": ExtResource("2_b00")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_e05")
+"texture": ExtResource("3_b01")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_e06")
+"texture": ExtResource("4_b02")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_e07")
+"texture": ExtResource("5_b03")
 }],
 "loop": true,
 "name": &"fly",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_b04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_b05")
+}],
+"loop": true,
+"name": &"dive",
+"speed": 10.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bat"]

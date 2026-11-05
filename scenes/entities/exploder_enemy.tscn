@@ -1,0 +1,63 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/exploder_enemy.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/exploder/exploder_run_00.png" id="2_r00"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/exploder/exploder_run_01.png" id="3_r01"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/exploder/exploder_run_02.png" id="4_r02"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/exploder/exploder_run_03.png" id="5_r03"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/exploder/exploder_detonate_00.png" id="6_d00"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/exploder/exploder_detonate_01.png" id="7_d01"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/exploder/exploder_detonate_02.png" id="8_d02"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/exploder/exploder_detonate_03.png" id="9_d03"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_exploder"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_r00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_r01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_r02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_r03")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_d00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_d01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_d02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_d03")
+}],
+"loop": false,
+"name": &"detonate",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_exploder"]
+radius = 16.0
+
+[node name="ExploderEnemy" type="CharacterBody2D" groups=["enemies"]]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_exploder")
+animation = &"run"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_exploder")

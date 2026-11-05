@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/gameplay_stage.gd" id="1_script"]
 [ext_resource type="Script" path="res://scripts/combat/arena.gd" id="2_arena"]
@@ -6,11 +6,15 @@
 [ext_resource type="PackedScene" path="res://scenes/entities/player.tscn" id="3_player"]
 [ext_resource type="Script" path="res://scripts/combat/combat_event_bus.gd" id="4_eventbus"]
 [ext_resource type="Script" path="res://scripts/synergy/synergy_engine.gd" id="5_synergy"]
-[ext_resource type="Texture2D" path="res://assets/sprites/hud_avatar.png" id="6_avatar"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/portrait_normal.png" id="6_avatar"]
 [ext_resource type="Texture2D" path="res://assets/sprites/dash_button_icon.png" id="7_dash_icon"]
 [ext_resource type="Texture2D" path="res://assets/sprites/synergy_banner_ref.png" id="8_banner_ref"]
 [ext_resource type="PackedScene" path="res://scenes/ui/augment_draft_ui.tscn" id="9_draft"]
 [ext_resource type="PackedScene" path="res://scenes/ui/run_results_ui.tscn" id="10_results"]
+[ext_resource type="Texture2D" path="res://assets/sprites/endless_floor_tile.png" id="11_tile"]
+[ext_resource type="Texture2D" path="res://assets/sprites/boss_hp_bar_frame.png" id="12_boss_frame"]
+[ext_resource type="PackedScene" path="res://scenes/ui/armory_shop_ui.tscn" id="13_shop"]
+[ext_resource type="Texture2D" path="res://assets/sprites/compass_pointer.png" id="14_compass"]
 
 [node name="GameplayStage" type="Node2D"]
 script = ExtResource("1_script")
@@ -24,7 +28,15 @@ script = ExtResource("5_synergy")
 [node name="Arena" type="Node2D" parent="."]
 script = ExtResource("2_arena")
 
+[node name="EndlessFloor" type="Sprite2D" parent="Arena"]
+z_index = -10
+texture_repeat = 2
+texture = ExtResource("11_tile")
+region_enabled = true
+region_rect = Rect2(-2500, -2000, 5000, 4000)
+
 [node name="ArenaBackground" type="Sprite2D" parent="Arena"]
+z_index = -5
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("2_bg")
 
@@ -53,6 +65,41 @@ texture = ExtResource("6_avatar")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="StageLabel" type="Label" parent="UI/TopHUD/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 17
+text = "🏰 MÀN 1"
+
+[node name="LevelLabel" type="Label" parent="UI/TopHUD/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Lv. 1"
+
+[node name="XPProgressBar" type="ProgressBar" parent="UI/TopHUD/HBoxContainer"]
+custom_minimum_size = Vector2(130, 16)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 12.0
+value = 0.0
+show_percentage = false
+
+[node name="XPLabel" type="Label" parent="UI/TopHUD/HBoxContainer/XPProgressBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 11
+text = "0 / 12 XP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="HPLabel" type="Label" parent="UI/TopHUD/HBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.35, 0.35, 1)
@@ -70,6 +117,72 @@ theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_font_sizes/font_size = 18
 text = "💀 72"
 
+[node name="GoldLabel" type="Label" parent="UI/TopHUD/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 18
+text = "🪙 0"
+
+[node name="BossHUD" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -340.0
+offset_top = 64.0
+offset_right = 340.0
+offset_bottom = 126.0
+grow_horizontal = 2
+
+[node name="FrameBackdrop" type="TextureRect" parent="UI/BossHUD"]
+layout_mode = 2
+texture = ExtResource("12_boss_frame")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="UI/BossHUD"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Header" type="HBoxContainer" parent="UI/BossHUD/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="BossNameLabel" type="Label" parent="UI/BossHUD/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 15
+text = "👑 ANCIENT COLOSSUS — LORD OF ASHES"
+vertical_alignment = 1
+
+[node name="ShieldStatusLabel" type="Label" parent="UI/BossHUD/VBox/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "🛡️ SHIELDED (3 Crystals)"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="HealthBar" type="ProgressBar" parent="UI/BossHUD/VBox"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+max_value = 1200.0
+value = 1200.0
+show_percentage = false
+
+[node name="HPTextLabel" type="Label" parent="UI/BossHUD/VBox/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 13
+text = "1200 / 1200 HP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="BottomHUD" type="Control" parent="UI"]
 layout_mode = 3
 anchors_preset = 12
@@ -80,16 +193,53 @@ offset_top = -80.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="AugmentSlots" type="HBoxContainer" parent="UI/BottomHUD"]
+[node name="LoadoutHBox" type="HBoxContainer" parent="UI/BottomHUD"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 32.0
-offset_top = -24.0
-offset_right = 350.0
-offset_bottom = 24.0
+offset_top = -28.0
+offset_right = 680.0
+offset_bottom = 28.0
 grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="WeaponIcon" type="TextureRect" parent="UI/BottomHUD/LoadoutHBox"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Weapon2Icon" type="TextureRect" parent="UI/BottomHUD/LoadoutHBox"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Weapon3Icon" type="TextureRect" parent="UI/BottomHUD/LoadoutHBox"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Relic1Icon" type="TextureRect" parent="UI/BottomHUD/LoadoutHBox"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Relic2Icon" type="TextureRect" parent="UI/BottomHUD/LoadoutHBox"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VSeparator" type="VSeparator" parent="UI/BottomHUD/LoadoutHBox"]
+layout_mode = 2
+
+[node name="AugmentSlots" type="HBoxContainer" parent="UI/BottomHUD/LoadoutHBox"]
+layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="DashButton" type="TextureButton" parent="UI/BottomHUD"]
@@ -162,5 +312,20 @@ text = "Burning enemies can chain lightning to 2 nearby enemies."
 horizontal_alignment = 1
 
 [node name="AugmentDraftUI" parent="UI" instance=ExtResource("9_draft")]
+
+[node name="CachePointer" type="TextureRect" parent="UI"]
+visible = false
+custom_minimum_size = Vector2(28, 28)
+offset_left = 640.0
+offset_top = 360.0
+offset_right = 668.0
+offset_bottom = 388.0
+pivot_offset = Vector2(14, 14)
+texture = ExtResource("14_compass")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ArmoryShopUI" parent="UI" instance=ExtResource("13_shop")]
+visible = false
 
 [node name="RunResultsUI" parent="UI" instance=ExtResource("10_results")]

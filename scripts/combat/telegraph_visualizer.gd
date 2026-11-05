@@ -1,9 +1,11 @@
 class_name TelegraphVisualizer
 extends Node2D
 
-@export var shape_type: String = "circle" # "circle" or "fan"
+@export var shape_type: String = "circle" # "circle", "fan", "line"
 @export var radius: float = 120.0
 @export var fan_angle_deg: float = 90.0
+@export var line_length: float = 400.0
+@export var line_width: float = 60.0
 @export var fill_color: Color = Color(1.0, 0.2, 0.2, 0.3)
 @export var outline_color: Color = Color(1.0, 0.3, 0.3, 0.9)
 
@@ -22,3 +24,7 @@ func _draw() -> void:
 			points.append(Vector2(cos(a), sin(a)) * radius)
 		draw_colored_polygon(points, fill_color)
 		draw_polyline(points, outline_color, 2.0)
+	elif shape_type == "line":
+		var rect = Rect2(0.0, -line_width / 2.0, line_length, line_width)
+		draw_rect(rect, fill_color)
+		draw_rect(rect, outline_color, false, 2.0)

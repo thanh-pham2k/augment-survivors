@@ -26,6 +26,13 @@ func setup(amount: float, element: GlobalEnums.ElementType, is_crit: bool = fals
 		scale = Vector2(1.5, 1.5)
 		label.modulate = Color(1.0, 0.2, 0.2)
 
+func setup_text(text: String, col: Color) -> void:
+	if not is_node_ready():
+		await ready
+	label.text = text
+	label.modulate = col
+	scale = Vector2(1.2, 1.2)
+
 func _process(delta: float) -> void:
 	current_time += delta
 	position += velocity * delta

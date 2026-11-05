@@ -16,5 +16,7 @@ enum AugmentRarity {
 enum EnemyArchetype {
 	SWARM_CHASER,
 	FLANKER,
+	RANGED_CASTER,
+	KAMIKAZE_EXPLODER,
 	BOSS
 }

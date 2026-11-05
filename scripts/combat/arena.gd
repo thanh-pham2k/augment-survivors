@@ -4,15 +4,35 @@ extends Node2D
 @export var radius: float = 650.0
 
 @onready var bg_sprite: Sprite2D = get_node_or_null("ArenaBackground")
+@onready var endless_floor: Sprite2D = get_node_or_null("EndlessFloor")
 
-func _draw() -> void:
-	# Subtle circular rune boundary
-	draw_arc(Vector2.ZERO, radius, 0.0, TAU, 64, Color(0.4, 0.5, 0.7, 0.8), 6.0)
-	draw_arc(Vector2.ZERO, radius * 0.7, 0.0, TAU, 48, Color(0.3, 0.4, 0.6, 0.4), 2.0)
-	draw_arc(Vector2.ZERO, radius * 0.35, 0.0, TAU, 32, Color(0.35, 0.45, 0.65, 0.4), 2.0)
-	
-	# Four decorative torches/rune points
-	var cardinal_dirs = [Vector2(radius, 0), Vector2(-radius, 0), Vector2(0, radius), Vector2(0, -radius)]
-	for p in cardinal_dirs:
-		draw_circle(p, 16.0, Color(0.9, 0.4, 0.1, 0.8))
-		draw_circle(p, 8.0, Color(1.0, 0.9, 0.4, 1.0))
+var biome_textures = {
+	"cathedral": preload("res://assets/sprites/endless_floor_tile.png"),
+	"magma": preload("res://assets/sprites/biome_magma_tile.png"),
+	"frost": preload("res://assets/sprites/biome_frost_tile.png")
+}
+
+var current_biome: String = "cathedral"
+
+func _ready() -> void:
+	if endless_floor:
+		endless_floor.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+		endless_floor.region_enabled = true
+		endless_floor.region_rect = Rect2(-2500, -2000, 5000, 4000)
+		endless_floor.z_index = -10
+	if bg_sprite:
+		bg_sprite.z_index = -5
+
+func set_biome(biome_name: String) -> void:
+	if biome_textures.has(biome_name) and endless_floor:
+		current_biome = biome_name
+		endless_floor.texture = biome_textures[biome_name]
+		print("[ARENA] Biome transitioned to: ", biome_name)
+
+func _process(_delta: float) -> void:
+	if endless_floor:
+		var players = get_tree().get_nodes_in_group("player")
+		if players.size() > 0:
+			var p = players[0] as Node2D
+			endless_floor.global_position = p.global_position
+			endless_floor.region_rect.position = p.global_position - Vector2(2500, 2000)

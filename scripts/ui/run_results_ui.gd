@@ -2,6 +2,7 @@ class_name RunResultsUI
 extends Control
 
 signal play_again_requested
+signal menu_requested
 
 @onready var header_label: Label = $PanelContainer/MarginContainer/VBoxMain/Header
 @onready var hero_avatar: TextureRect = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol/AvatarPanel/HeroAvatar
@@ -15,25 +16,33 @@ signal play_again_requested
 @onready var build_summary_label: Label = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/BuildSummaryBox/SummaryText
 @onready var damage_chart: VBoxContainer = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/DamageChartBox
 
-@onready var play_again_btn: Button = $PanelContainer/MarginContainer/VBoxMain/PlayAgainButton
+@onready var play_again_btn: Button = get_node_or_null("PanelContainer/MarginContainer/VBoxMain/ActionButtons/PlayAgainButton")
+@onready var menu_btn: Button = get_node_or_null("PanelContainer/MarginContainer/VBoxMain/ActionButtons/MenuButton")
 
 func _ready() -> void:
-	play_again_btn.pressed.connect(func(): play_again_requested.emit())
+	if play_again_btn:
+		play_again_btn.pressed.connect(func(): play_again_requested.emit())
+	if menu_btn:
+		menu_btn.pressed.connect(func():
+			get_tree().paused = false
+			get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
+		)
 
-func show_results(is_victory: bool, time_str: String, kills: int, damage_contrib: Dictionary, synergies: Dictionary, active_augments: Array[AugmentData] = []) -> void:
+func show_results(is_victory: bool, time_str: String, kills: int, damage_contrib: Dictionary, synergies: Dictionary, active_augments: Array[AugmentData] = [], extra_stats: Dictionary = {}) -> void:
 	visible = true
 	get_tree().paused = true
 	
 	if is_victory:
-		header_label.text = "🏆 VICTORY 🏆"
+		header_label.text = "🏆 HUYỀN THOẠI SINH TỒN 🏆"
 		header_label.modulate = Color(1.0, 0.88, 0.25)
 	else:
-		header_label.text = "☠ DEFEAT ☠"
-		header_label.modulate = Color(0.95, 0.25, 0.25)
+		header_label.text = "⚔️ KẾT QUẢ SINH TỒN VÔ TẬN ⚔️"
+		header_label.modulate = Color(0.95, 0.45, 0.25)
 		
 	time_val.text = time_str
 	kills_val.text = str(kills)
-	best_val.text = time_str
+	var lvl = extra_stats.get("level", 1)
+	best_val.text = "Lv. %d" % lvl
 	
 	# Render Acquired Augments (6 slots)
 	for child in augments_grid.get_children():

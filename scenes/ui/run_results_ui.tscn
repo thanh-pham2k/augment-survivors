@@ -171,10 +171,21 @@ text = "Damage Contribution:"
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="PlayAgainButton" type="Button" parent="PanelContainer/MarginContainer/VBoxMain"]
-custom_minimum_size = Vector2(260, 48)
+[node name="ActionButtons" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxMain"]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="PlayAgainButton" type="Button" parent="PanelContainer/MarginContainer/VBoxMain/ActionButtons"]
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
-theme_override_font_sizes/font_size = 20
-text = "▶ PLAY AGAIN"
+theme_override_font_sizes/font_size = 18
+text = "▶ CHƠI LẠI"
+
+[node name="MenuButton" type="Button" parent="PanelContainer/MarginContainer/VBoxMain/ActionButtons"]
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "🏠 VỀ MENU CHÍNH"

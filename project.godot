@@ -47,6 +47,10 @@ dash={
 ]
 }
 
+[autoload]
+
+SaveData="*res://scripts/meta/save_manager.gd"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

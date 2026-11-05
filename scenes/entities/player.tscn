@@ -1,53 +1,101 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=30 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/player.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/textures/player/player_00.png" id="2_p00"]
-[ext_resource type="Texture2D" path="res://assets/textures/player/player_01.png" id="3_p01"]
-[ext_resource type="Texture2D" path="res://assets/textures/player/player_02.png" id="4_p02"]
-[ext_resource type="Texture2D" path="res://assets/textures/player/player_03.png" id="5_p03"]
-[ext_resource type="Texture2D" path="res://assets/textures/player/player_04.png" id="6_p04"]
-[ext_resource type="Texture2D" path="res://assets/textures/player/player_05.png" id="7_p05"]
-[ext_resource type="Texture2D" path="res://assets/textures/player/player_06.png" id="8_p06"]
-[ext_resource type="Texture2D" path="res://assets/textures/player/player_07.png" id="9_p07"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_00.png" id="2_f00"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_01.png" id="3_f01"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_02.png" id="4_f02"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_03.png" id="5_f03"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_04.png" id="6_f04"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_05.png" id="7_f05"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_06.png" id="8_f06"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_07.png" id="9_f07"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_08.png" id="10_f08"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_09.png" id="11_f09"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_10.png" id="12_f10"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_11.png" id="13_f11"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_12.png" id="14_f12"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_13.png" id="15_f13"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_14.png" id="16_f14"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_15.png" id="17_f15"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_16.png" id="18_f16"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_17.png" id="19_f17"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_18.png" id="20_f18"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/player_frame_19.png" id="21_f19"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/death_00.png" id="22_d00"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/death_01.png" id="23_d01"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/death_02.png" id="24_d02"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/death_03.png" id="25_d03"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/death_04.png" id="26_d04"]
+[ext_resource type="Texture2D" path="res://assets/final_sprites/player/death_05.png" id="27_d05"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_player"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_p00")
+"texture": ExtResource("2_f00")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_p01")
+"texture": ExtResource("3_f01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_f02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_f03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_f04")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 4.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_p02")
+"texture": ExtResource("7_f05")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_p03")
+"texture": ExtResource("8_f06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_f07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_f08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_f09")
 }],
 "loop": true,
 "name": &"walk",
-"speed": 8.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("6_p04")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_p05")
-}],
-"loop": false,
-"name": &"cast",
 "speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("8_p06")
+"texture": ExtResource("12_f10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_f11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_f12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_f13")
+}],
+"loop": false,
+"name": &"cast",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_f14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_f15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_f16")
 }],
 "loop": false,
 "name": &"dash",
@@ -55,10 +103,39 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("9_p07")
+"texture": ExtResource("19_f17")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_f18")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_f19")
 }],
 "loop": false,
 "name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("22_d00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_d01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_d02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_d03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_d04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_d05")
+}],
+"loop": false,
+"name": &"death",
 "speed": 8.0
 }]
 
@@ -76,5 +153,5 @@ sprite_frames = SubResource("SpriteFrames_player")
 animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 10)
+position = Vector2(0, 8)
 shape = SubResource("CapsuleShape2D_player")

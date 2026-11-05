@@ -41,3 +41,12 @@ radius = 210.0
 fan_angle_deg = 90.0
 fill_color = Color(1.0, 0.2, 0.2, 0.25)
 outline_color = Color(1.0, 0.3, 0.3, 0.9)
+
+[node name="TelegraphCharge" type="Node2D" parent="."]
+visible = false
+script = ExtResource("3_telegraph")
+shape_type = "line"
+line_length = 420.0
+line_width = 70.0
+fill_color = Color(1.0, 0.2, 0.2, 0.25)
+outline_color = Color(1.0, 0.3, 0.3, 0.9)

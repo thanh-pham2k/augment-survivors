@@ -14,3 +14,8 @@ extends Resource
 @export var chill_slow_pct: float = 0.0
 @export var chain_targets: int = 0
 @export var proc_chance: float = 1.0
+
+# Weapon projectile & range modifiers
+@export var extra_projectiles: int = 0
+@export var spread_angle_deg: float = 0.0
+@export var range_bonus_pct: float = 0.0

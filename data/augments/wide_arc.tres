@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/synergy/augment_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "wide_arc"
+name = "Wide Arc"
+description = "Expands attack detection range by +40% and projects broad defensive coverage."
+rarity = 1
+element = 0
+icon_path = "res://assets/icons/wide_arc.png"
+bonus_damage_pct = 0.1
+burn_dps = 0.0
+chill_slow_pct = 0.0
+chain_targets = 0
+proc_chance = 1.0
+extra_projectiles = 1
+spread_angle_deg = 35.0
+range_bonus_pct = 0.4

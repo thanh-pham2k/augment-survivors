@@ -13,6 +13,9 @@ var speed_modifier: float = 1.0
 var statuses: Dictionary = {}
 var event_bus: CombatEventBus
 var damage_num_scene: PackedScene = preload("res://scenes/combat/floating_damage_number.tscn")
+var gold_scene: PackedScene = preload("res://scenes/combat/gold_drop.tscn")
+var xp_gem_scene: PackedScene = preload("res://scenes/combat/xp_gem.tscn")
+var chest_scene: PackedScene = preload("res://scenes/combat/reward_chest.tscn")
 
 @onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D")
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
@@ -21,8 +24,11 @@ var damage_num_scene: PackedScene = preload("res://scenes/combat/floating_damage
 func _ready() -> void:
 	add_to_group("enemies")
 	current_health = max_health
-	if animated_sprite:
-		animated_sprite.play("walk")
+	if animated_sprite and animated_sprite.sprite_frames:
+		if animated_sprite.sprite_frames.has_animation("walk"):
+			animated_sprite.play("walk")
+		elif animated_sprite.sprite_frames.has_animation("fly"):
+			animated_sprite.play("fly")
 
 func _physics_process(delta: float) -> void:
 	_update_statuses(delta)
@@ -84,8 +90,58 @@ func _die() -> void:
 	if event_bus:
 		event_bus.enemies_defeated += 1
 		event_bus.emit_combat_event("enemy_killed", {"target": self})
+	_spawn_gold()
+	_spawn_xp_gem()
+	if scale.x > 1.2 or archetype == GlobalEnums.EnemyArchetype.BOSS:
+		_spawn_chest()
 	enemy_defeated.emit(self)
 	queue_free()
+
+func _spawn_chest() -> void:
+	if not get_parent():
+		return
+	var ch = chest_scene.instantiate() as RewardChest
+	ch.global_position = global_position
+	ch.chest_type = "gold" if archetype == GlobalEnums.EnemyArchetype.BOSS else "silver"
+	get_parent().call_deferred("add_child", ch)
+
+func _spawn_xp_gem() -> void:
+	if not get_parent():
+		return
+	var gem = xp_gem_scene.instantiate() as XPGem
+	gem.global_position = global_position
+	if archetype == GlobalEnums.EnemyArchetype.BOSS:
+		gem.value = 50.0
+		gem.scale = Vector2(1.8, 1.8)
+	elif archetype == GlobalEnums.EnemyArchetype.RANGED_CASTER:
+		gem.value = 3.0
+	elif archetype == GlobalEnums.EnemyArchetype.KAMIKAZE_EXPLODER:
+		gem.value = 2.0
+	elif scale.x > 1.2:
+		gem.value = 10.0
+		gem.scale = Vector2(1.4, 1.4)
+	else:
+		gem.value = 1.0
+	get_parent().call_deferred("add_child", gem)
+
+func _spawn_gold() -> void:
+	if not get_parent():
+		return
+	var g = gold_scene.instantiate() as GoldDrop
+	g.global_position = global_position
+	if archetype == GlobalEnums.EnemyArchetype.BOSS:
+		g.value = 50
+		g.scale = Vector2(1.8, 1.8)
+	elif archetype == GlobalEnums.EnemyArchetype.RANGED_CASTER:
+		g.value = 3
+	elif archetype == GlobalEnums.EnemyArchetype.KAMIKAZE_EXPLODER:
+		g.value = 2
+	elif scale.x > 1.2:
+		g.value = 10
+		g.scale = Vector2(1.4, 1.4)
+	else:
+		g.value = 1
+	get_parent().call_deferred("add_child", g)
 
 func _behavior_step(delta: float) -> void:
 	var player = _get_player()

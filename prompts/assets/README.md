@@ -1,47 +1,32 @@
-# Kế Hoạch Gom Batch & Hướng Dẫn Tách Asset Tự Động
+# Quy Chuẩn Tạo Asset Theo Batch — HOÀN TẤT 100%
 
-Tài liệu hướng dẫn quy trình tạo asset theo batch qua Agent vẽ ảnh, sau đó chuyển giao cho subagent kỹ thuật xử lý tự động cắt, xóa nền xanh và tích hợp thẳng vào game engine Godot 4.
-
----
-
-## 1. Danh Mục 5 Batch Prompts Đã Thiết Lập
-
-Tất cả các prompt đã được lưu thành từng file markdown độc lập tại thư mục `prompts/assets/`:
-
-| Batch | File Prompt | Số Sub-images | Nội Dung & Mục Tiêu |
-| :---: | :--- | :---: | :--- |
-| **01** | [`prompts/assets/batch_01_player.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/batch_01_player.md) | **8 frames** (4x2) | Hoạt họa nhân vật chính (Anime Flame Mage): Idle, Walk, Cast, Dash. |
-| **02** | [`prompts/assets/batch_02_enemies.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/batch_02_enemies.md) | **8 frames** (4x2) | Skeleton Warrior cầm kiếm (4 frames) & Dơi tím bay lượn (4 frames). |
-| **03** | [`prompts/assets/batch_03_boss_colossus.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/batch_03_boss_colossus.md) | **6 frames** (3x2) | Boss The Ember Colossus đập sàn/quét quạt & Trụ tinh thể pha lê Crystal Core. |
-| **04** | [`prompts/assets/batch_04_draft_cards.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/batch_04_draft_cards.md) | **6 cards** (3x2) | Bộ 3 thẻ bài draft viền neon (Ember Shot, Frostbite, Arc Bolt) & Thẻ Synergy. |
-| **05** | [`prompts/assets/batch_05_projectiles_ui.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/batch_05_projectiles_ui.md) | **8 items** (4x2) | Đạn lửa 3 tia, đạn băng, tia sét, vụ nổ hơi nước, nút Dash tròn, Avatar HUD. |
+> **Trạng thái**: Tất cả các Batch Asset (Bản đồ Đấu trường, Hoạt họa Nhân vật, Kẻ địch, Boss, VFX, Màn hình Menu Chính và toàn bộ 12 Thẻ bài Nâng cấp Tarot) đã được tạo, bóc tách Chroma Key, chuẩn hóa Ground Pivot Lock và tích hợp thành công vào Game Engine Godot 4!
 
 ---
 
-## 2. Quy Trình Phối Hợp Giữa Bạn & Tôi
+## 1. Bảng Tổng Kết Trạng Thái Toàn Bộ Batch
 
-```mermaid
-flowchart LR
-    A[Bạn gửi Prompt cho Agent vẽ ảnh] --> B[Nhận 1 ảnh PNG/JPG trên phông nền #00FF00]
-    B --> C[Bạn thả ảnh vào workspace hoặc gửi đường dẫn cho tôi]
-    C --> D[Script Python của tôi tự động tách phông xanh & cắt từng sub-image]
-    D --> E[Tự động cập nhật scene & animation Godot và chạy test]
-```
+| Mã Batch | File Prompt (Đã hoàn thành) | Số Sub-images | Nội dung chính | Trạng thái |
+| :---: | :--- | :---: | :--- | :---: |
+| **00** | [`arena_map_background_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/arena_map_background_done.md) | **1 ảnh (16:9)** | Bản đồ Đấu trường đá cổ 1920×1080, 4 cột trụ đuốc than rực lửa, vòng ma pháp rune. | ✅ **ĐÃ XONG** |
+| **01** | [`01_player_movement_8f_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/01_player_movement_8f_done.md) | **8 frames** (4x2) | Hoạt họa thở (Idle 4f) & Chạy (Run 4f) Anime Flame Mage độ nét cao. | ✅ **ĐÃ XONG** |
+| **02** | [`02_player_combat_8f_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/02_player_combat_8f_done.md) | **8 frames** (4x2) | Chưởng phóng cầu lửa (Cast 4f) + Lướt tàn lửa (Dash 2f) + Trúng đòn (Hurt 2f). | ✅ **ĐÃ XONG** |
+| **03** | [`03_skeleton_warrior_8f_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/03_skeleton_warrior_8f_done.md) | **8 frames** (4x2) | Lính xương Skeleton: Bước đi (Walk 4f) + Chém kiếm vệt sáng (Slash 4f). | ✅ **ĐÃ XONG** |
+| **04** | [`04_shadow_bat_8f_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/04_shadow_bat_8f_done.md) | **8 frames** (4x2) | Dơi quỷ tím Shadow Bat: Vỗ cánh bay (Fly 4f) + Lao bổ nhào (Dive 4f). | ✅ **ĐÃ XONG** |
+| **05** | [`05_boss_colossus_6f_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/05_boss_colossus_6f_done.md) | **6 frames lớn** (3x2) | Boss Khổng lồ Nham thạch: Thở nham thạch (2f) + Đập sàn (2f) + Quét quạt (2f). | ✅ **ĐÃ XONG** |
+| **06** | [`06_elemental_vfx_8f_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/06_elemental_vfx_8f_done.md) | **8 items** (4x2) | Cầu lửa bay & nổ tung + Tia sét Arc Bolt + Vụ nổ hơi nước Steam Burst. | ✅ **ĐÃ XONG** |
+| **07** | [`07_augment_draft_cards_6f_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/07_augment_draft_cards_6f_done.md) | **6 cards** (3x2) | Bộ 6 thẻ bài Tarot Ultra HD: Ember Shot, Frostbite, Arc Bolt & Synergies. | ✅ **ĐÃ XONG** |
+| **08** | [`08_main_menu_background_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/08_main_menu_background_done.md) | **1 ảnh (16:9)** | Bức tranh nền Main Menu sạch 100% không text (Pháp sư góc trái, lâu đài gothic trăng máu). | ✅ **ĐÃ XONG** |
+| **09** | [`09_menu_ui_buttons_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/09_menu_ui_buttons_done.md) | **5 items** (1x5) | Logo 3D "AUGMENT SURVIVORS" vàng kim hoàng gia & Bộ nút bấm chạm khắc kim loại. | ✅ **ĐÃ XONG** |
+| **10** | [`10_weapon_and_catalyst_cards_6f_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/10_weapon_and_catalyst_cards_6f_done.md) | **6 cards** (3x2) | Bộ 6 thẻ bài Tarot còn lại: Reaction Catalyst, Overload, Shatter, Close Quarters, Multi-Shot, Wide Arc. | ✅ **ĐÃ XONG** |
+| **11** | [`11_endless_dungeon_floor_tiles_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/11_endless_dungeon_floor_tiles_done.md) | **1 ảnh (1:1)** | Texture nền gạch đá cổ Gothic vô tận (Seamless Tiling Ground 1024x1024). | ✅ **ĐÃ XONG** |
+| **12** | [`12_dark_mage_cultist_spritesheet_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/12_dark_mage_cultist_spritesheet_done.md) | **8 frames** (4x2) | Quái Pháp sư Bắn xa Dark Mage: Di chuyển lơ lửng (4f) + Tụ cầu hắc ám & Bắn (4f). | ✅ **ĐÃ XONG** |
+| **13** | [`13_kamikaze_exploder_spritesheet_done.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/prompts/assets/13_kamikaze_exploder_spritesheet_done.md) | **8 frames** (4x2) | Quái Tự sát Kamikaze Ghoul: Chạy nước rút cuồng bạo (4f) + Nạp xung nổ lửa (4f). | ✅ **ĐÃ XONG** |
 
-### Bước 1: Gửi Prompt Cho Agent Vẽ Ảnh
-Bạn mở file prompt tương ứng trong thư mục `prompts/assets/` (ví dụ `batch_01_player.md`), copy đoạn code text ở **Mục 4** và đưa cho Image Generator Agent.
+---
 
-### Bước 2: Bàn Giao Ảnh Đầu Ra Cho Tôi
-Khi nhận được ảnh (chỉ cần 1 ảnh duy nhất chứa lưới sub-images trên nền xanh `#00FF00`), bạn lưu ảnh vào thư mục dự án (hoặc upload qua chat) với tên gợi ý:
-- `assets/incoming/batch_01_player.png`
-- `assets/incoming/batch_02_enemies.png`
-- `assets/incoming/batch_03_boss.png`
-- `assets/incoming/batch_04_cards.png`
-- `assets/incoming/batch_05_projectiles_ui.png`
-
-### Bước 3: Tôi Tự Động Xử Lý
-Chỉ cần bạn nhắn *"Đã có ảnh batch X"*, tôi sẽ:
-1. Chạy bộ lọc Chroma Key thông minh bóc tách màu nền xanh `#00FF00`, giữ nguyên độ sắc nét và alpha kênh viền.
-2. Cắt chính xác từng ô sub-image theo tọa độ lưới (bounding box).
-3. Đổi tên và nạp trực tiếp vào SpriteFrames và UI của Godot 4.
-4. Chạy bộ test headless kiểm tra game chạy ổn định.
+## 2. Quy Chuẩn Kỹ Thuật Đã Áp Dụng
+1. **Chroma Key `#00FF00`**: Toàn bộ viền xanh lá được xử lý trong suốt tuyệt đối không lem màu.
+2. **Ground Pivot Lock**: Chân của nhân vật và quái được neo cố định tại cùng tọa độ Y trên canvas 128×128 (và 256×256 cho Boss), triệt tiêu hoàn toàn hiện tượng trượt chân hoặc giật nhấp nhô.
+3. **Loại Bỏ Hoàn Toàn Chồng Chữ**: Màn hình Run Results và Main Menu sử dụng 100% nền tranh thuần không chữ và render các nút bấm / Logo độc lập bằng Godot UI.
+4. **100% Thẻ Bài Đạt Chuẩn Tarot Ultra HD**: Toàn bộ 12 lõi nâng cấp đều có thẻ bài mỹ thuật riêng biệt, không còn bất kỳ ô thẻ tạm (fallback) nào!

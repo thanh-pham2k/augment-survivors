@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/synergy/augment_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "multishot"
+name = "Multi-Shot"
+description = "Fires +2 additional projectiles per volley in a sweeping fan arc."
+rarity = 1
+element = 0
+icon_path = "res://assets/icons/split_fire.png"
+bonus_damage_pct = 0.15
+burn_dps = 0.0
+chill_slow_pct = 0.0
+chain_targets = 0
+proc_chance = 1.0
+extra_projectiles = 2
+spread_angle_deg = 25.0
+range_bonus_pct = 0.15

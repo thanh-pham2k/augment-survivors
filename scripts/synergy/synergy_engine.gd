@@ -18,6 +18,18 @@ func add_augment(augment: AugmentData) -> void:
 func has_augment(id: String) -> bool:
 	return active_augments.has(id)
 
+func get_total_extra_projectiles() -> int:
+	var total = 0
+	for aug in active_augments.values():
+		total += aug.extra_projectiles
+	return total
+
+func get_total_range_bonus_pct() -> float:
+	var total = 0.0
+	for aug in active_augments.values():
+		total += aug.range_bonus_pct
+	return total
+
 func _check_synergy_combinations() -> void:
 	if not event_bus:
 		return

@@ -1,0 +1,111 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/armory_shop_ui.gd" id="1_script"]
+
+[node name="ArmoryShopUI" type="Control"]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -240.0
+offset_right = 340.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Header" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "⚒️ LÒ RÈN CỔ ĐẠI — NÂNG CẤP VŨ KHÍ"
+horizontal_alignment = 1
+
+[node name="GoldTitle" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+text = "🪙 TÀI NGUYÊN HIỆN CÓ: 0 VÀNG"
+horizontal_alignment = 1
+
+[node name="Grid" type="VBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="DmgUpgrade" type="HBoxContainer" parent="Panel/VBox/Grid"]
+layout_mode = 2
+alignment = 1
+
+[node name="Btn" type="Button" parent="Panel/VBox/Grid/DmgUpgrade"]
+custom_minimum_size = Vector2(580, 42)
+layout_mode = 2
+text = "🗡️ Sát Thương +20% (Cấp 0/5) — Giá 25 Vàng"
+
+[node name="SpeedUpgrade" type="HBoxContainer" parent="Panel/VBox/Grid"]
+layout_mode = 2
+alignment = 1
+
+[node name="Btn" type="Button" parent="Panel/VBox/Grid/SpeedUpgrade"]
+custom_minimum_size = Vector2(580, 42)
+layout_mode = 2
+text = "🏹 Tốc Độ Đạn +15% (Cấp 0/5) — Giá 20 Vàng"
+
+[node name="MagnetUpgrade" type="HBoxContainer" parent="Panel/VBox/Grid"]
+layout_mode = 2
+alignment = 1
+
+[node name="Btn" type="Button" parent="Panel/VBox/Grid/MagnetUpgrade"]
+custom_minimum_size = Vector2(580, 42)
+layout_mode = 2
+text = "🧲 Bán Kính Nam Châm +35% (Cấp 0/5) — Giá 15 Vàng"
+
+[node name="HealUpgrade" type="HBoxContainer" parent="Panel/VBox/Grid"]
+layout_mode = 2
+alignment = 1
+
+[node name="Btn" type="Button" parent="Panel/VBox/Grid/HealUpgrade"]
+custom_minimum_size = Vector2(580, 42)
+layout_mode = 2
+text = "🧪 Sinh Lực & Hồi Máu (+25 HP) — Giá 30 Vàng"
+
+[node name="RerollUpgrade" type="HBoxContainer" parent="Panel/VBox/Grid"]
+layout_mode = 2
+alignment = 1
+
+[node name="Btn" type="Button" parent="Panel/VBox/Grid/RerollUpgrade"]
+custom_minimum_size = Vector2(580, 42)
+layout_mode = 2
+text = "🎲 Mua +1 Xúc Xắc Reroll — Giá 35 Vàng"
+
+[node name="CloseBtn" type="Button" parent="Panel/VBox"]
+custom_minimum_size = Vector2(260, 46)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "⚔️ TIẾP TỤC CHIẾN ĐẤU"

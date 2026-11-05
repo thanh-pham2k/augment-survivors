@@ -1,0 +1,228 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/map_select_ui.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu_background.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gold_coin.png" id="3_gold"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/map_card_cathedral.png" id="4_card_cathedral"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/map_card_magma.png" id="5_card_magma"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/map_card_frost.png" id="6_card_frost"]
+
+[node name="MapSelectUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+modulate = Color(0.25, 0.25, 0.35, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Header" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 40.0
+offset_top = 20.0
+offset_right = -40.0
+offset_bottom = 65.0
+grow_horizontal = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Header"]
+custom_minimum_size = Vector2(140, 42)
+layout_mode = 2
+text = "← QUAY LẠI"
+
+[node name="TitleLabel" type="Label" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.9, 0.5, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 22
+text = "🗺️ CHỌN CHIẾN TRƯỜNG & ĐỘ NGUY HIỂM"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GoldContainer" type="HBoxContainer" parent="Header"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="GoldIcon" type="TextureRect" parent="Header/GoldContainer"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("3_gold")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldLabel" type="Label" parent="Header/GoldContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 20
+text = "350"
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = 80.0
+offset_right = -60.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="CardCathedral" type="PanelContainer" parent="HBox"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="HBox/CardCathedral"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Image" type="TextureRect" parent="HBox/CardCathedral/VBox"]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+texture = ExtResource("4_card_cathedral")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="HBox/CardCathedral/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 18
+text = "🏰 THÁNH ĐƯỜNG TÀN TRO"
+horizontal_alignment = 1
+
+[node name="Threat" type="Label" parent="HBox/CardCathedral/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 13
+text = "Độ khó: ⭐ Bình thường (Khởi đầu)"
+horizontal_alignment = 1
+
+[node name="Desc" type="Label" parent="HBox/CardCathedral/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "Sàn đá hoa cương vững chãi, cân bằng giữa tốc độ và mật độ quái. Thưởng vàng: 100%."
+autowrap_mode = 2
+horizontal_alignment = 1
+
+[node name="DepartBtn" type="Button" parent="HBox/CardCathedral"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 16
+text = "⚔️ XUẤT TRẬN"
+
+[node name="CardMagma" type="PanelContainer" parent="HBox"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="HBox/CardMagma"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Image" type="TextureRect" parent="HBox/CardMagma/VBox"]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+texture = ExtResource("5_card_magma")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="HBox/CardMagma/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.25, 1)
+theme_override_font_sizes/font_size = 18
+text = "🌋 MIỆNG NÚI LỬA MAGMA"
+horizontal_alignment = 1
+
+[node name="Threat" type="Label" parent="HBox/CardMagma/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7, 0.2, 1)
+theme_override_font_sizes/font_size = 13
+text = "Độ khó: ⭐⭐ Nguy hiểm (Quái nhanh)"
+horizontal_alignment = 1
+
+[node name="Desc" type="Label" parent="HBox/CardMagma/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "Hồ nham thạch sôi sục, quái chạy nhanh hơn +15%. Thưởng vàng tích lũy: +25% (125%)."
+autowrap_mode = 2
+horizontal_alignment = 1
+
+[node name="DepartBtn" type="Button" parent="HBox/CardMagma"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0.6, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "⚔️ XUẤT TRẬN"
+
+[node name="CardFrost" type="PanelContainer" parent="HBox"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="HBox/CardFrost"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Image" type="TextureRect" parent="HBox/CardFrost/VBox"]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+texture = ExtResource("6_card_frost")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="HBox/CardFrost/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "❄️ THUNG LŨNG BĂNG GIÁ"
+horizontal_alignment = 1
+
+[node name="Threat" type="Label" parent="HBox/CardFrost/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "Độ khó: ⭐⭐⭐ Cực độ (Bão tuyết)"
+horizontal_alignment = 1
+
+[node name="Desc" type="Label" parent="HBox/CardFrost/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "Âm phong buốt giá và băng nứt, quái Ice Wraith đông đảo. Thưởng vàng tích lũy: +50% (150%)."
+autowrap_mode = 2
+horizontal_alignment = 1
+
+[node name="DepartBtn" type="Button" parent="HBox/CardFrost"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.5, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "⚔️ XUẤT TRẬN"

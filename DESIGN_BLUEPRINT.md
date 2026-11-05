@@ -179,3 +179,14 @@ Run Seed
 - **P2 — Complete Run**: Draft UI, RNG streams, reroll, milestone pacing, Boss fight, Victory/Defeat screen.
 - **P3 — Reliability & Telemetry**: Deterministic seed, logging, atomic draft state, stress test 60 FPS.
 - **P4 — Blind Playtest**: Bản itch.io test 20–30 người (Metric chính: Voluntary Replay Rate ≥ 50%).
+
+---
+
+## IV. Gameplay 2.0 & Vertical Slice Evolution (Confirmed Standard)
+
+> Chi tiết kỹ thuật, công thức tiến hóa vũ khí và tiêu chuẩn kiến trúc xem tại: [`GAMEPLAY_2.0_BLUEPRINT.md`](file:///Users/thanhpv/Documents/Work/augment-survivors/GAMEPLAY_2.0_BLUEPRINT.md)
+
+1. **Vòng lặp phần thưởng (Reward Loop)**: Combat ➔ Kill Elite ➔ Loot Chest ➔ 3 Slot Equipment (Weapon, Armor, Relic) ➔ Build Transformation.
+2. **Tiến hóa vũ khí (Weapon Evolution)**: Lv.3 + Augment xúc tác = Nhánh tiến hóa (AoE vs Single-target vs Fallback Mastery).
+3. **Kiến trúc Godot 4**: Tách biệt `Resource` (Data tĩnh) và `Node/Controller` (Runtime state). Không lưu biến động vào `.tres`.
+4. **Chiến lược phát triển**: Hoàn thiện **Vertical Slice** (Inferno Staff + 1 Elite + 1 Loot Chest + 1 Relic + 1 Evolution) trước khi mở rộng ngang.

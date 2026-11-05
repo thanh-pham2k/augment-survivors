@@ -1,12 +1,12 @@
 class_name Projectile
 extends Area2D
 
-@export var speed: float = 450.0
-@export var damage: float = 20.0
+@export var speed: float = 680.0
+@export var damage: float = 18.0
 @export var element: GlobalEnums.ElementType = GlobalEnums.ElementType.NONE
 
 var direction: Vector2 = Vector2.RIGHT
-var lifetime: float = 2.5
+var lifetime: float = 1.3
 var shot_index: int = 0
 var event_bus: CombatEventBus
 
@@ -14,6 +14,7 @@ var event_bus: CombatEventBus
 
 func _ready() -> void:
 	monitoring = true
+	rotation = direction.angle()
 	area_entered.connect(_on_area_entered)
 	body_entered.connect(_on_body_entered)
 	
