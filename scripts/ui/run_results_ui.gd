@@ -3,33 +3,77 @@ extends Control
 
 signal play_again_requested
 
-@onready var bg_texture: TextureRect = $Background
-@onready var time_label: Label = $VBoxContainer/StatsGrid/TimeValue
-@onready var kills_label: Label = $VBoxContainer/StatsGrid/KillsValue
-@onready var damage_chart_container: VBoxContainer = $VBoxContainer/DamageChart
-@onready var synergies_list: VBoxContainer = $VBoxContainer/SynergiesList
-@onready var play_again_btn: Button = $VBoxContainer/PlayAgainButton
+@onready var header_label: Label = $PanelContainer/MarginContainer/VBoxMain/Header
+@onready var hero_avatar: TextureRect = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol/AvatarPanel/HeroAvatar
+@onready var augments_grid: HBoxContainer = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol/AugmentsGrid
+@onready var synergies_list: VBoxContainer = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol/SynergiesList
+
+@onready var time_val: Label = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/StatsGrid/TimeVal
+@onready var kills_val: Label = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/StatsGrid/KillsVal
+@onready var best_val: Label = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/StatsGrid/BestVal
+
+@onready var build_summary_label: Label = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/BuildSummaryBox/SummaryText
+@onready var damage_chart: VBoxContainer = $PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/DamageChartBox
+
+@onready var play_again_btn: Button = $PanelContainer/MarginContainer/VBoxMain/PlayAgainButton
 
 func _ready() -> void:
 	play_again_btn.pressed.connect(func(): play_again_requested.emit())
 
-func show_results(is_victory: bool, time_str: String, kills: int, damage_contrib: Dictionary, synergies: Dictionary) -> void:
+func show_results(is_victory: bool, time_str: String, kills: int, damage_contrib: Dictionary, synergies: Dictionary, active_augments: Array[AugmentData] = []) -> void:
 	visible = true
 	get_tree().paused = true
 	
-	var header = $VBoxContainer/Header as Label
 	if is_victory:
-		header.text = "🏆 VICTORY 🏆"
-		header.modulate = Color(1.0, 0.88, 0.2)
+		header_label.text = "🏆 VICTORY 🏆"
+		header_label.modulate = Color(1.0, 0.88, 0.25)
 	else:
-		header.text = "☠ DEFEAT ☠"
-		header.modulate = Color(0.9, 0.2, 0.2)
+		header_label.text = "☠ DEFEAT ☠"
+		header_label.modulate = Color(0.95, 0.25, 0.25)
 		
-	time_label.text = time_str
-	kills_label.text = str(kills)
+	time_val.text = time_str
+	kills_val.text = str(kills)
+	best_val.text = time_str
 	
+	# Render Acquired Augments (6 slots)
+	for child in augments_grid.get_children():
+		child.queue_free()
+	for i in range(6):
+		var slot = PanelContainer.new()
+		slot.custom_minimum_size = Vector2(44, 44)
+		if i < active_augments.size():
+			var aug = active_augments[i]
+			var tr = TextureRect.new()
+			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			if aug.icon_path != "" and ResourceLoader.exists(aug.icon_path):
+				tr.texture = load(aug.icon_path)
+			slot.add_child(tr)
+		augments_grid.add_child(slot)
+		
+	# Render Synergies
+	for child in synergies_list.get_children():
+		child.queue_free()
+	if synergies.is_empty():
+		var l = Label.new()
+		l.text = "None discovered this run."
+		l.modulate = Color(0.7, 0.7, 0.7)
+		synergies_list.add_child(l)
+	else:
+		for syn_id in synergies.keys():
+			var s_data = synergies[syn_id]
+			var row = HBoxContainer.new()
+			var icon_l = Label.new()
+			icon_l.text = "⚡"
+			icon_l.modulate = Color(1.0, 0.85, 0.2)
+			row.add_child(icon_l)
+			var text_l = Label.new()
+			text_l.text = s_data.get("name", syn_id)
+			text_l.modulate = Color(0.95, 0.95, 1.0)
+			row.add_child(text_l)
+			synergies_list.add_child(row)
+			
 	# Render Damage Contribution Bars
-	for child in damage_chart_container.get_children():
+	for child in damage_chart.get_children():
 		child.queue_free()
 		
 	var total_dmg: float = 0.0
@@ -38,43 +82,43 @@ func show_results(is_victory: bool, time_str: String, kills: int, damage_contrib
 	if total_dmg <= 0.0:
 		total_dmg = 1.0
 		
-	var colors = {
-		"Fire": Color(1.0, 0.45, 0.1),
-		"Ice": Color(0.3, 0.8, 1.0),
-		"Lightning": Color(1.0, 0.9, 0.2),
-		"Physical": Color(0.9, 0.6, 0.2)
-	}
+	var cats = [
+		{"name": "Burning (DoT)", "key": "Fire", "color": Color(1.0, 0.45, 0.15)},
+		{"name": "Chain Lightning", "key": "Lightning", "color": Color(1.0, 0.9, 0.25)},
+		{"name": "Fire Shot", "key": "Physical", "color": Color(1.0, 0.65, 0.2)},
+		{"name": "Frostbite (Slow)", "key": "Ice", "color": Color(0.35, 0.8, 1.0)}
+	]
 	
-	for cat in ["Fire", "Lightning", "Physical", "Ice"]:
-		var val = damage_contrib.get(cat, 0.0)
+	for c in cats:
+		var val = damage_contrib.get(c["key"], 0.0)
 		var pct = int((val / total_dmg) * 100.0)
 		
 		var row = HBoxContainer.new()
+		row.add_theme_constant_override("separation", 12)
+		
 		var lbl = Label.new()
 		lbl.custom_minimum_size = Vector2(130, 0)
-		lbl.text = cat + ":"
+		lbl.text = c["name"]
+		lbl.add_theme_font_size_override("font_size", 13)
 		row.add_child(lbl)
 		
 		var pbar = ProgressBar.new()
-		pbar.custom_minimum_size = Vector2(280, 22)
+		pbar.custom_minimum_size = Vector2(220, 18)
 		pbar.value = pct
-		pbar.show_percentage = true
+		pbar.show_percentage = false
+		pbar.modulate = c["color"]
 		row.add_child(pbar)
 		
-		damage_chart_container.add_child(row)
+		var pct_lbl = Label.new()
+		pct_lbl.text = str(pct) + "%"
+		pct_lbl.custom_minimum_size = Vector2(40, 0)
+		pct_lbl.add_theme_font_size_override("font_size", 13)
+		row.add_child(pct_lbl)
 		
-	# Render Synergies
-	for child in synergies_list.get_children():
-		child.queue_free()
+		damage_chart.add_child(row)
 		
-	if synergies.is_empty():
-		var l = Label.new()
-		l.text = "None discovered this run."
-		synergies_list.add_child(l)
+	# Dynamic build summary based on top damage category
+	if damage_contrib.get("Fire", 0.0) > damage_contrib.get("Ice", 0.0):
+		build_summary_label.text = "A potent Fire-Lightning build that spreads Burning and chains damage across enemy swarms."
 	else:
-		for syn_id in synergies.keys():
-			var s_data = synergies[syn_id]
-			var l = Label.new()
-			l.text = "⚡ " + s_data.get("name", syn_id) + " — " + s_data.get("desc", "")
-			l.modulate = Color(1.0, 0.9, 0.4)
-			synergies_list.add_child(l)
+		build_summary_label.text = "A tactical Frost-Control build slowing enemies and shattering frozen targets."

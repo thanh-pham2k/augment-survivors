@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/run_results_ui.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/sprites/victory_screen_bg.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero_portrait_results.png" id="2_avatar"]
 
 [node name="RunResultsUI" type="Control"]
 process_mode = 3
@@ -14,96 +14,167 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="DimOverlay" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_bg")
-expand_mode = 1
-stretch_mode = 6
+color = Color(0.04, 0.05, 0.09, 0.9)
 
-[node name="Overlay" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.04, 0.04, 0.08, 0.5)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = 250.0
+offset_left = -460.0
+offset_top = -280.0
+offset_right = 460.0
+offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxMain" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Header" type="Label" parent="VBoxContainer"]
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxMain"]
 layout_mode = 2
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
-theme_override_font_sizes/font_size = 42
-text = "VICTORY"
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "🏆 VICTORY 🏆"
 horizontal_alignment = 1
 
-[node name="StatsGrid" type="GridContainer" parent="VBoxContainer"]
+[node name="ContentHBox" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxMain"]
 layout_mode = 2
-columns = 2
-theme_override_constants/h_separation = 30
+size_flags_vertical = 3
+theme_override_constants/separation = 32
 
-[node name="TimeLabel" type="Label" parent="VBoxContainer/StatsGrid"]
+[node name="LeftCol" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox"]
+custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="AvatarPanel" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HeroAvatar" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol/AvatarPanel"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture = ExtResource("2_avatar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol/AvatarPanel"]
+layout_mode = 2
+alignment = 1
+
+[node name="HeroName" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol/AvatarPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
 theme_override_font_sizes/font_size = 18
-text = "Survival Time:"
+text = "Flame Invoker"
 
-[node name="TimeValue" type="Label" parent="VBoxContainer/StatsGrid"]
+[node name="HeroDesc" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol/AvatarPanel/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "11:50"
+theme_override_colors/font_color = Color(0.75, 0.8, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "Level 18 Grandmaster"
 
-[node name="KillsLabel" type="Label" parent="VBoxContainer/StatsGrid"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Defeated Enemies:"
-
-[node name="KillsValue" type="Label" parent="VBoxContainer/StatsGrid"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "5,973"
-
-[node name="SynergiesTitle" type="Label" parent="VBoxContainer"]
+[node name="AugmentsTitle" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
-theme_override_font_sizes/font_size = 18
-text = "Discovered Synergies:"
+theme_override_font_sizes/font_size = 15
+text = "Acquired Augments (6):"
 
-[node name="SynergiesList" type="VBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="DamageTitle" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
-theme_override_font_sizes/font_size = 18
-text = "Damage Contribution:"
-
-[node name="DamageChart" type="VBoxContainer" parent="VBoxContainer"]
+[node name="AugmentsGrid" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="PlayAgainButton" type="Button" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 52)
+[node name="SynergiesTitle" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.4, 1)
-theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "Discovered Synergies:"
+
+[node name="SynergiesList" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/LeftCol"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="RightCol" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="StatsGrid" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol"]
+layout_mode = 2
+columns = 2
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 6
+
+[node name="TimeLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/StatsGrid"]
+layout_mode = 2
+text = "⏳ Survival Time:"
+
+[node name="TimeVal" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/StatsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "11:50"
+
+[node name="KillsLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/StatsGrid"]
+layout_mode = 2
+text = "💀 Defeated Enemies:"
+
+[node name="KillsVal" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/StatsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "5,973"
+
+[node name="BestLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/StatsGrid"]
+layout_mode = 2
+text = "👑 Personal Best:"
+
+[node name="BestVal" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/StatsGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "11:50 (NEW)"
+
+[node name="BuildSummaryBox" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol"]
+layout_mode = 2
+
+[node name="SummaryText" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol/BuildSummaryBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 13
+text = "A potent Fire-Lightning build that spreads Burning and chains damage across enemy swarms."
+autowrap_mode = 2
+
+[node name="DamageTitle" type="Label" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "Damage Contribution:"
+
+[node name="DamageChartBox" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxMain/ContentHBox/RightCol"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PlayAgainButton" type="Button" parent="PanelContainer/MarginContainer/VBoxMain"]
+custom_minimum_size = Vector2(260, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 20
 text = "▶ PLAY AGAIN"

@@ -175,10 +175,10 @@ func _update_timer_label() -> void:
 	timer_label.text = "%02d:%02d" % [mins, secs]
 
 func _on_player_died() -> void:
-	results_ui.show_results(false, timer_label.text, event_bus.enemies_defeated, event_bus.damage_contribution, event_bus.discovered_synergies)
+	results_ui.show_results(false, timer_label.text, event_bus.enemies_defeated, event_bus.damage_contribution, event_bus.discovered_synergies, active_augments)
 
 func _on_boss_defeated() -> void:
-	results_ui.show_results(true, timer_label.text, event_bus.enemies_defeated, event_bus.damage_contribution, event_bus.discovered_synergies)
+	results_ui.show_results(true, timer_label.text, event_bus.enemies_defeated, event_bus.damage_contribution, event_bus.discovered_synergies, active_augments)
 
 func _on_play_again() -> void:
 	get_tree().paused = false
