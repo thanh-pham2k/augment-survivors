@@ -2,52 +2,47 @@ class_name XPGem
 extends Area2D
 
 @export var value: float = 1.0
-var is_attracted: bool = false
-var pull_speed: float = 260.0
+var is_attracted: bool = true
+var pull_speed: float = 380.0
 var _bob_timer: float = 0.0
 var _is_collected: bool = false
 
 @onready var sprite: Sprite2D = $Sprite2D
 
 func _ready() -> void:
-	monitoring = true
+	set_deferred("monitoring", true)
+	is_attracted = true
 	_bob_timer = randf() * TAU
 
 func _physics_process(delta: float) -> void:
 	if _is_collected:
 		return
 		
-	_bob_timer += delta * 4.5
-	if sprite and not is_attracted:
-		sprite.position.y = sin(_bob_timer) * 3.0
-		
-	var players = get_tree().get_nodes_in_group("player")
-	if players.is_empty():
-		return
-	var player = players[0]
+	var player = get_tree().get_first_node_in_group("player")
 	if not is_instance_valid(player):
 		return
 		
 	var to_player = player.global_position - global_position
 	var dist = to_player.length()
-	var magnet_range = player.magnet_radius if ("magnet_radius" in player) else 170.0
 	
-	if dist <= magnet_range:
-		is_attracted = true
-		
-	if is_attracted:
-		pull_speed = min(950.0, pull_speed + 850.0 * delta)
-		var dir = to_player.normalized()
-		global_position += dir * pull_speed * delta
-		
-		if dist <= 26.0:
-			collect(player)
+	# Auto-collect: Always automatically fly directly to player
+	is_attracted = true
+	var bonus_speed = max(0.0, (player.magnet_radius - 170.0) * 1.2) if ("magnet_radius" in player) else 0.0
+	pull_speed = min(1600.0, pull_speed + (1400.0 + bonus_speed) * delta)
+	
+	var move_step = (pull_speed + bonus_speed) * delta
+	if dist <= 36.0 or move_step >= dist:
+		global_position = player.global_position
+		collect(player)
+	else:
+		var dir = to_player / dist
+		global_position += dir * move_step
 
 func collect(player: Node2D) -> void:
 	if _is_collected:
 		return
 	_is_collected = true
-	monitoring = false
+	set_deferred("monitoring", false)
 	if player.has_method("add_xp"):
 		player.add_xp(value)
 	queue_free()
