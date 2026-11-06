@@ -45,4 +45,21 @@ func collect(player: Node2D) -> void:
 	set_deferred("monitoring", false)
 	if player.has_method("add_gold"):
 		player.add_gold(value)
+	_spawn_sparkle(player)
 	queue_free()
+
+func _spawn_sparkle(player: Node2D) -> void:
+	if not get_parent():
+		return
+	var sp = Sprite2D.new()
+	var tex = load("res://assets/sprites/vfx/absorb_sparkle_0.png")
+	if tex:
+		sp.texture = tex
+		sp.modulate = Color(1.0, 0.85, 0.2)
+		sp.global_position = player.global_position + Vector2(randf_range(-10, 10), randf_range(-10, 10))
+		sp.scale = Vector2(0.25, 0.25)
+		get_parent().add_child(sp)
+		var tw = sp.create_tween()
+		tw.parallel().tween_property(sp, "scale", Vector2(0.55, 0.55), 0.15)
+		tw.parallel().tween_property(sp, "modulate:a", 0.0, 0.16)
+		tw.tween_callback(sp.queue_free)
