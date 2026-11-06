@@ -362,3 +362,34 @@ func take_damage(amount: float) -> void:
 func add_gold(amount: int) -> void:
 	current_gold += amount
 	gold_changed.emit(current_gold)
+
+var _last_pulse_time: float = 0.0
+
+func play_absorb_fx(type: String = "xp") -> void:
+	# 1. Subtle micro-scale bounce pulse on player sprite
+	var now = Time.get_ticks_msec() / 1000.0
+	if now - _last_pulse_time > 0.07:
+		_last_pulse_time = now
+		var target_vis = animated_sprite if animated_sprite else sprite
+		if target_vis:
+			var tw = target_vis.create_tween()
+			tw.tween_property(target_vis, "scale", Vector2(1.07, 1.07), 0.03)
+			tw.tween_property(target_vis, "scale", Vector2(1.0, 1.0), 0.05)
+			
+	# 2. Glowing soul absorb shockwave ring
+	if get_parent():
+		var aura = Sprite2D.new()
+		var tex = load("res://assets/sprites/vfx/absorb_sparkle_0.png")
+		if tex:
+			aura.texture = tex
+			aura.global_position = global_position + Vector2(randf_range(-6, 6), randf_range(-10, 10))
+			aura.scale = Vector2(0.4, 0.4)
+			if type == "gold":
+				aura.modulate = Color(1.0, 0.88, 0.3, 0.85)
+			else:
+				aura.modulate = Color(0.3, 0.9, 1.0, 0.85)
+			get_parent().add_child(aura)
+			var tw_a = aura.create_tween()
+			tw_a.parallel().tween_property(aura, "scale", Vector2(0.9, 0.9), 0.14)
+			tw_a.parallel().tween_property(aura, "modulate:a", 0.0, 0.15)
+			tw_a.tween_callback(aura.queue_free)

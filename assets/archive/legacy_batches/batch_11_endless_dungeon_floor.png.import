@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b4buoxa6jcm5k"
-path="res://.godot/imported/batch_11_endless_dungeon_floor.png-a08e234227746113656602c2c1a2f5d5.ctex"
+path="res://.godot/imported/batch_11_endless_dungeon_floor.png-a4e92113d5b66b271944cc27e05b7651.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/incoming/batch_11_endless_dungeon_floor.png"
-dest_files=["res://.godot/imported/batch_11_endless_dungeon_floor.png-a08e234227746113656602c2c1a2f5d5.ctex"]
+source_file="res://assets/archive/legacy_batches/batch_11_endless_dungeon_floor.png"
+dest_files=["res://.godot/imported/batch_11_endless_dungeon_floor.png-a4e92113d5b66b271944cc27e05b7651.ctex"]
 
 [params]
 

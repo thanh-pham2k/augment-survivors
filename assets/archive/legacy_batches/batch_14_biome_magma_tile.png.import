@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c2hdy2epc1s63"
-path="res://.godot/imported/batch_14_biome_magma_tile.png-786ebb1f78eacde4ead61ba36172beb8.ctex"
+path="res://.godot/imported/batch_14_biome_magma_tile.png-b84cdbd9f764b40538b318b5f8fc5f9c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/incoming/batch_14_biome_magma_tile.png"
-dest_files=["res://.godot/imported/batch_14_biome_magma_tile.png-786ebb1f78eacde4ead61ba36172beb8.ctex"]
+source_file="res://assets/archive/legacy_batches/batch_14_biome_magma_tile.png"
+dest_files=["res://.godot/imported/batch_14_biome_magma_tile.png-b84cdbd9f764b40538b318b5f8fc5f9c.ctex"]
 
 [params]
 

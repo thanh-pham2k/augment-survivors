@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cmvgbq1v826ug"
-path="res://.godot/imported/batch_07_portals_and_forge.png-c2fdda1fe01e3f82a9933976696aadd4.ctex"
+path="res://.godot/imported/batch_07_portals_and_forge.png-93e713f6d4b13dba04c58c7fed483ffd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/incoming/batch_07_portals_and_forge.png"
-dest_files=["res://.godot/imported/batch_07_portals_and_forge.png-c2fdda1fe01e3f82a9933976696aadd4.ctex"]
+source_file="res://assets/archive/legacy_batches/batch_07_portals_and_forge.png"
+dest_files=["res://.godot/imported/batch_07_portals_and_forge.png-93e713f6d4b13dba04c58c7fed483ffd.ctex"]
 
 [params]
 

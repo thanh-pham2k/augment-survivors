@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://rbkp57o44ytg"
-path="res://.godot/imported/batch_13_kamikaze_exploder.png-3339506cb3d0424fe3f14e16788bc669.ctex"
+path="res://.godot/imported/batch_13_kamikaze_exploder.png-843c45c2c49f0485aa5356666faac431.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/incoming/batch_13_kamikaze_exploder.png"
-dest_files=["res://.godot/imported/batch_13_kamikaze_exploder.png-3339506cb3d0424fe3f14e16788bc669.ctex"]
+source_file="res://assets/archive/legacy_batches/batch_13_kamikaze_exploder.png"
+dest_files=["res://.godot/imported/batch_13_kamikaze_exploder.png-843c45c2c49f0485aa5356666faac431.ctex"]
 
 [params]
 

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b8jq8bfgp3iex"
-path="res://.godot/imported/batch_04_synergies_and_dash.png-00bc7098edd0e32720e7cfa4151df479.ctex"
+path="res://.godot/imported/batch_04_synergies_and_dash.png-e95d1d9dc6061aefb3fc7697c042b932.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/incoming/batch_04_synergies_and_dash.png"
-dest_files=["res://.godot/imported/batch_04_synergies_and_dash.png-00bc7098edd0e32720e7cfa4151df479.ctex"]
+source_file="res://assets/archive/legacy_batches/batch_04_synergies_and_dash.png"
+dest_files=["res://.godot/imported/batch_04_synergies_and_dash.png-e95d1d9dc6061aefb3fc7697c042b932.ctex"]
 
 [params]
 

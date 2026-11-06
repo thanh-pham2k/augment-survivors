@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qoogxxxti8y4"
-path="res://.godot/imported/batch_12_dark_mage_cultist.png-dd5f2c6bbad6f2129283a3a6823fbef3.ctex"
+path="res://.godot/imported/batch_12_dark_mage_cultist.png-4bc4a8afc76411ffe7888e94713df742.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/incoming/batch_12_dark_mage_cultist.png"
-dest_files=["res://.godot/imported/batch_12_dark_mage_cultist.png-dd5f2c6bbad6f2129283a3a6823fbef3.ctex"]
+source_file="res://assets/archive/batch_12/batch_12_dark_mage_cultist.png"
+dest_files=["res://.godot/imported/batch_12_dark_mage_cultist.png-4bc4a8afc76411ffe7888e94713df742.ctex"]
 
 [params]
 
